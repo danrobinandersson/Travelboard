@@ -1,0 +1,29 @@
+.widget {
+  max-width: 24rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.latest {
+  font-size: 1.25rem;
+}
+
+.date {
+  color: #666;
+}
+
+.error {
+  color: #b00020;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.25rem 0;
+  text-align: left;
+}
