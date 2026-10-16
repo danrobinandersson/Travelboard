@@ -17,7 +17,7 @@ export interface RestCountry {
   names: { common: string };
   codes: { alpha_2: string };
   flag: { url_svg: string };
-  currencies: Currency[];
+  currencies?: Currency[]; // missing for some territories, e.g. Antarctica
 }
 
 export interface RestCountriesResponse {

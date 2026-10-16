@@ -14,8 +14,8 @@ import { RatesService } from '../../services/rates-service';
 export class ExchangeRateWidget implements OnInit {
   private readonly ratesService = inject(RatesService);
 
-  readonly base = input('SEK');
-  readonly target = input('EUR');
+  readonly base = input('USD');
+  readonly target = input('SEK');
 
   protected readonly data = signal<RatesResponse | null>(null);
   protected readonly loading = signal(true);
