@@ -1,0 +1,14 @@
+.results {
+  max-height: 16rem;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.results button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+}
