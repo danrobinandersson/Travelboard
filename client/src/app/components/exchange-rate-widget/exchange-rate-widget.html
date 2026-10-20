@@ -12,7 +12,9 @@
     </p>
     <p class="date">As of {{ rates.latest.date }}</p>
 
-      <div class="grid-container">
+    <div echarts [options]="chartOptions()" class="chart"></div>
+
+    <div class="grid-container">
       <ag-grid-angular
         class="grid"
         [rowData]="rates.history"

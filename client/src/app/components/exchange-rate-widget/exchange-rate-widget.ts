@@ -5,10 +5,19 @@ import { RatesResponse } from '../../models/rates';
 import { RatesService } from '../../services/rates-service';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import * as echarts from 'echarts/core';
+import { LineChart } from 'echarts/charts';
+import { GridComponent, TooltipComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+import type { EChartsOption } from 'echarts';
+
+echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
 @Component({
   selector: 'app-exchange-rate-widget',
-  imports: [DecimalPipe, AgGridAngular],
+  imports: [DecimalPipe, AgGridAngular, NgxEchartsDirective],
+  providers: [provideEchartsCore({ echarts })],
   templateUrl: './exchange-rate-widget.html',
   styleUrl: './exchange-rate-widget.scss',
 })
@@ -29,6 +38,24 @@ export class ExchangeRateWidget {
     { field: 'date', headerName: 'Date', sortable: true, filter: true },
     { field: 'rate', headerName: 'Rate', sortable: true, filter: 'agNumberColumnFilter' },
   ];
+
+  protected readonly chartOptions = computed<EChartsOption>(() => {
+  const history = this.data()?.history ?? [];
+  return {
+    tooltip: { trigger: 'axis' },
+    grid: { left: 50, right: 20, top: 20, bottom: 30 },
+    xAxis: { type: 'category', data: history.map((p) => p.date) },
+    yAxis: { type: 'value', scale: true },
+    series: [
+      {
+        type: 'line',
+        data: history.map((p) => p.rate),
+        smooth: true,
+        showSymbol: false,
+      },
+    ],
+  };
+});
 
 
   constructor() {
