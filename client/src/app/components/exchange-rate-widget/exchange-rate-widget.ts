@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
-
 import { RatesResponse } from '../../models/rates';
 import { RatesService } from '../../services/rates-service';
+import { AgGridAngular } from 'ag-grid-angular';
+import type { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-exchange-rate-widget',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, AgGridAngular],
   templateUrl: './exchange-rate-widget.html',
   styleUrl: './exchange-rate-widget.scss',
 })
@@ -23,6 +24,12 @@ export class ExchangeRateWidget {
 
   // The last 7 days, newest first
   protected readonly recent = computed(() => this.data()?.history.slice(-7).reverse() ?? []);
+
+    protected readonly columnDefs: ColDef[] = [
+    { field: 'date', headerName: 'Date', sortable: true, filter: true },
+    { field: 'rate', headerName: 'Rate', sortable: true, filter: 'agNumberColumnFilter' },
+  ];
+
 
   constructor() {
     effect((onCleanup) => {
