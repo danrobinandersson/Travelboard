@@ -11,12 +11,14 @@ import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsOption } from 'echarts';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+
 
 echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
 @Component({
   selector: 'app-exchange-rate-widget',
-  imports: [DecimalPipe, AgGridAngular, NgxEchartsDirective],
+  imports: [DecimalPipe, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './exchange-rate-widget.html',
   styleUrl: './exchange-rate-widget.scss',
@@ -38,6 +40,8 @@ export class ExchangeRateWidget {
     { field: 'date', headerName: 'Date', sortable: true, filter: true },
     { field: 'rate', headerName: 'Rate', sortable: true, filter: 'agNumberColumnFilter' },
   ];
+
+protected readonly showTable = signal(false);
 
   protected readonly chartOptions = computed<EChartsOption>(() => {
   const history = this.data()?.history ?? [];

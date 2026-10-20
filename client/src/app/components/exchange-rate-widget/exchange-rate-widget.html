@@ -12,14 +12,16 @@
     </p>
     <p class="date">As of {{ rates.latest.date }}</p>
 
-    <div echarts [options]="chartOptions()" class="chart"></div>
+    <mat-slide-toggle [checked]="showTable()" (change)="showTable.set($event.checked)">
+      Toggle view
+    </mat-slide-toggle>
 
-    <div class="grid-container">
-      <ag-grid-angular
-        class="grid"
-        [rowData]="rates.history"
-        [columnDefs]="columnDefs"
-      />
-    </div>
+    @if (showTable()) {
+      <div class="grid-container">
+        <ag-grid-angular class="grid" [rowData]="rates.history" [columnDefs]="columnDefs" />
+      </div>
+    } @else {
+      <div echarts [options]="chartOptions()" class="chart"></div>
+    }
   }
 </section>
