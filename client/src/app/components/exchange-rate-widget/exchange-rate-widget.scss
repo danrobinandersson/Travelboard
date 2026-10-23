@@ -1,5 +1,5 @@
 .widget {
-  max-width: 24rem;
+  max-width: 30rem;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -26,4 +26,18 @@ th,
 td {
   padding: 0.25rem 0;
   text-align: left;
+}
+
+.grid-container {
+  height: 400px;
+}
+
+.grid {
+  width: 100%;
+  height: 100%;
+}
+
+.chart {
+  width: 100%;
+  height: 300px;
 }

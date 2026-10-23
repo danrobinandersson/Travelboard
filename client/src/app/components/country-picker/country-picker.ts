@@ -1,15 +1,21 @@
 import { Component, OnInit, computed, inject, output, signal } from '@angular/core';
-
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-country-picker',
-  imports: [],
+  imports: [MatAutocomplete, MatAutocompleteTrigger, MatOption, MatFormField, MatLabel, MatInput],
   templateUrl: './country-picker.html',
   styleUrl: './country-picker.scss',
 })
-
 export class CountryPicker implements OnInit {
   private readonly countriesService = inject(CountriesService);
 
@@ -42,7 +48,13 @@ export class CountryPicker implements OnInit {
     this.query.set((event.target as HTMLInputElement).value);
   }
 
-  protected select(country: Country): void {
+  protected displayCountry(country: Country | null): string {
+    return country?.name ?? '';
+  }
+
+  protected onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    const country = event.option.value as Country;
+    this.query.set(country.name);
     this.countrySelected.emit(country);
   }
 }
