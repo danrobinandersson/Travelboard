@@ -1,25 +1,30 @@
-<input
-  type="search"
-  placeholder="Search for a country"
-  [value]="query()"
-  (input)="onSearch($event)"
-/>
-
-@if (loading()) {
-  <p>Loading countries…</p>
-} @else if (error()) {
+@if (error()) {
   <p class="error">{{ error() }}</p>
-} @else {
-  <ul class="results">
-    @for (country of filtered(); track country.code) {
-      <li>
-        <button type="button" (click)="select(country)">
-          <img [src]="country.flag" alt="" width="24" />
-          {{ country.name }}
-        </button>
-      </li>
-    } @empty {
-      <li>No countries found</li>
-    }
-  </ul>
 }
+
+<mat-form-field appearance="outline">
+  <mat-label>Country</mat-label>
+  <input
+    matInput
+    type="text"
+    [placeholder]="loading() ? 'Loading countries…' : 'Search for a country'"
+    [disabled]="loading() || error() !== null"
+    [value]="query()"
+    (input)="onSearch($event)"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayCountry"
+    (optionSelected)="onOptionSelected($event)"
+  >
+    @for (country of filtered(); track country.code) {
+      <mat-option [value]="country">
+        <img class="flag" [src]="country.flag" alt="" width="24" />
+        {{ country.name }}
+      </mat-option>
+    } @empty {
+      <mat-option disabled>No countries found</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
