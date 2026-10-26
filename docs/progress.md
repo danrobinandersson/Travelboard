@@ -3,55 +3,66 @@
 Update after every task. Check this before starting one.
 
 ## Current sprint
-Sprint 2 (Oct 19-25): Full dashboard. Supervision Oct 21.
-Sprint 1 leftovers are carried over (marked below).
+Sprint 3 (Oct 26-Nov 1): Auth and deploy. Supervision Nov 4.
+Sprint 2 leftovers are carried over (marked below).
+
+## Live
+- Server: https://travelboard.onrender.com (Render free plan, sleeps when idle, first request takes 30-60 s, wake it before presenting)
+- Client: Vercel (add link here)
+- Repo: https://github.com/danrobinandersson/Travelboard
 
 ## Done
-- Angular client, Express server skeleton, CLAUDE.md and project docs
-- Header, footer and basic styling
-- Exchange rates: Frankfurter v2 service on the server (validation, error class),
-  `GET /api/rates`, client service, and a widget with loading/error states that
-  re-fetches when the country changes
-- Countries: REST Countries v5 service (API key in `server/.env`, 24 h cache),
-  `GET /api/countries` and `/api/countries/:code`, client service
-- Country picker (search and select) wired to the exchange rate widget
-- APIs tested and working: Frankfurter, REST Countries
+- Angular client, Express server, CLAUDE.md, project docs, header, footer, styling
+- Exchange rates: Frankfurter v2 service, `GET /api/rates`, widget with loading/error states, chart/grid toggle, re-fetches when the country changes
+- Countries: REST Countries v5 service (24 h cache), `GET /api/countries` and `/api/countries/:code`, now with capital, coordinates and population
+- Country picker (dropdown) wired to the exchange rate widget
+- Chart and grid library chosen and in use: ECharts (charts), AG Grid (data grid), Angular Material (UI)
+- Weather: `GET /api/weather?latitude=..&longitude=..` (MET Norway, 30 min cache, serves an expired cache entry if a fetch fails). Server only, no client widget yet
+- Deployment: server on Render, client on Vercel, environment files for the API URL (`client/src/environments/`), server build/start scripts
+- Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
 - (nothing)
 
 ## Next
-- [ ] Choose the chart/grid library (Sprint 1 leftover, everything else depends on it)
-- [ ] Country facts widget (add capital, population, region, languages to `FIELDS` in `countriesService.ts`)
-- [ ] Test Open-Meteo and Nager.Date with curl (no key needed), then decide
-- [ ] Weather/climate widget
-- [ ] Holidays widget
-- [ ] Country overview page with routing (Sprint 1 leftover, `app.routes.ts` is empty)
-- [ ] Data grid with sorting and filtering
+- [ ] Verify on Render: `/api/weather?latitude=59.33&longitude=18.07` works
+- [ ] Verify on Vercel: picker, chart/grid toggle and exchange widget work against the Render server
+- [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
+- [ ] Routing and country overview page (`app.routes.ts` is empty): picker as home, `/country/:code` as dashboard. Then add `client/vercel.json` with a rewrite to `/index.html`, otherwise refreshing a route gives a 404
+- [ ] Weather widget: client service and model, map MET `symbol` strings to text/icons, use `country.coordinates` (can be null), show "Weather data from MET Norway" with a link to https://api.met.no/ (required by MET)
+- [ ] Country facts widget (data already in `Country`)
+- [ ] Holidays widget (test Nager.Date first)
+- [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server
 - [ ] Compare view for 2-3 countries (no login)
-- [ ] Error handling review across widgets
+- [ ] Supabase login and favourites
+- [ ] AI chat (Should)
+- [ ] Tests, README
+- [ ] Add GitHub, Vercel and Render links to `examensarbete.md` (before Nov 16)
+- [ ] Delete merged feature branches (optional)
 
 ## Not tested yet
+- Nager.Date (holidays)
 - World Bank API (comparison indicators)
 - Sights API (OpenTripMap or Wikivoyage, Should)
 
-## Questions for supervision Oct 21
-- Is the compare view realistic in Sprint 2, or move it to Sprint 3?
-- AI assistant scope
-
 ## Later
-- Sprint 3: Supabase auth, favourites, first early deploy
-- Sprint 4: AI assistant (Should)
-- Sprint 5: deploy, polish, README, result section
+- Sprint 4 (Nov 2-8): AI assistant (Should). Supervision Nov 4
+- Sprint 5 (Nov 9-15): polish, README, result section. Submit before Nov 16
+- Presentation Nov 19-20
 
 ## Known limitations
 - The exchange rate widget uses only a country's first currency (`currencies[0]`)
 - Exchange rates only exist for about 30 major currencies (Frankfurter), so some countries show "not available"
+- Initial bundle is large (AG Grid, ECharts, Material), so the budget in `angular.json` was raised to warn 3 MB / error 4 MB. Possible fix later: lazy-load the dashboard route
+- CORS allows all origins (`cors()`), could be restricted to the Vercel domain
+- Weather daily rows are grouped by UTC date, so the first day is partial
 
 ## Decisions
 - 2026-10-14: AI chat is Should, not part of the MVP
 - 2026-10-14: Compare view does not require login
-- 2026-10-14: Client on Vercel, server on Render or similar
-- 2026-10-14: Free chart/grid library, not DevExtreme (not yet chosen)
+- 2026-10-14: Client on Vercel, server on Render
 - 2026-10-14: Frankfurter v2 API (v1 is deprecated), one request returns history, latest is the last row
-- 2026-10-16: REST Countries v5 (needs an API key). All countries are fetched once and cached for 24 h, search and lookup run in memory
+- 2026-10-16: REST Countries v5 (needs an API key, set only in `server/.env` and on Render). All countries are fetched once and cached for 24 h, search and lookup run in memory
+- 2026-10-23: Chart/grid library: ECharts and AG Grid (free), not DevExtreme
+- 2026-10-26: Weather provider switched from Open-Meteo to MET Norway (Locationforecast 2.0, no key, needs an identifying `User-Agent`). Open-Meteo returned 429 "daily limit exceeded" on Render because the IP is shared. Not a code bug. The response now has `symbol` (MET string, e.g. `partlycloudy_day`) instead of a WMO `weatherCode`, and wind in m/s instead of km/h
+- 2026-10-26: Deployment config fixes: `server/tsconfig.json` has `rootDir`, `outDir` and `include: src/**/*` (otherwise `scratch/` broke the build). Feature branches had never been merged and were merged into `main` and `develop`
