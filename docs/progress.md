@@ -16,6 +16,8 @@ Sprint 2 leftovers are carried over (marked below).
 - Exchange rates: Frankfurter v2 service, `GET /api/rates`, widget with loading/error states, chart/grid toggle, re-fetches when the country changes
 - Countries: REST Countries v5 service (24 h cache), `GET /api/countries` and `/api/countries/:code`, now with capital, coordinates and population
 - Country picker (dropdown) wired to the exchange rate widget
+- Routing: home page with the picker, and a country page at `/country/:code` with the exchange rate widget
+- `vercel.json` so refreshing a page on Vercel doesn't give a 404
 - Chart and grid library chosen and in use: ECharts (charts), AG Grid (data grid), Angular Material (UI)
 - Weather: `GET /api/weather?latitude=..&longitude=..` (MET Norway, 30 min cache, serves an expired cache entry if a fetch fails). Server only, no client widget yet
 - Deployment: server on Render, client on Vercel, environment files for the API URL (`client/src/environments/`), server build/start scripts
@@ -26,9 +28,8 @@ Sprint 2 leftovers are carried over (marked below).
 
 ## Next
 - [ ] Verify on Render: `/api/weather?latitude=59.33&longitude=18.07` works
-- [ ] Verify on Vercel: picker, chart/grid toggle and exchange widget work against the Render server
+- [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
 - [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
-- [ ] Routing and country overview page (`app.routes.ts` is empty): picker as home, `/country/:code` as dashboard. Then add `client/vercel.json` with a rewrite to `/index.html`, otherwise refreshing a route gives a 404
 - [ ] Weather widget: client service and model, map MET `symbol` strings to text/icons, use `country.coordinates` (can be null), show "Weather data from MET Norway" with a link to https://api.met.no/ (required by MET)
 - [ ] Country facts widget (data already in `Country`)
 - [ ] Holidays widget (test Nager.Date first)
@@ -58,6 +59,7 @@ Sprint 2 leftovers are carried over (marked below).
 - Weather daily rows are grouped by UTC date, so the first day is partial
 
 ## Decisions
+- 2026-10-26: The country page loads its data from the URL, so refresh and shared links work
 - 2026-10-14: AI chat is Should, not part of the MVP
 - 2026-10-14: Compare view does not require login
 - 2026-10-14: Client on Vercel, server on Render
