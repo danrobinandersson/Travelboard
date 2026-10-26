@@ -1,39 +1,41 @@
-// Our own shape: what the client receives
+// Our own shape (what the client gets)
 export interface CurrentWeather {
   time: string;
-  temperature: number; // °C
-  windSpeed: number; // km/h
-  weatherCode: number; // WMO code, the client maps it to text/icon
+  temperature: number | null;
+  windSpeed: number | null; // m/s
+  symbol: string | null; // MET symbol code, e.g. "partlycloudy_day"
 }
 
 export interface DailyWeather {
-  date: string;
+  date: string; // YYYY-MM-DD (UTC)
   tempMax: number | null;
   tempMin: number | null;
   precipitation: number | null; // mm
-  weatherCode: number | null;
+  symbol: string | null;
 }
 
 export interface WeatherResponse {
   latitude: number;
   longitude: number;
   current: CurrentWeather;
-  daily: DailyWeather[]; // one entry per day, oldest first
+  daily: DailyWeather[];
 }
 
-// What Open-Meteo sends (service layer only)
-export interface OpenMeteoForecast {
-  current: {
-    time: string;
-    temperature_2m: number;
-    weather_code: number;
-    wind_speed_10m: number;
+// Raw MET Norway locationforecast 2.0 "compact" shape (only what we use)
+interface MetNoPeriod {
+  summary?: { symbol_code?: string };
+  details?: { precipitation_amount?: number };
+}
+
+export interface MetNoEntry {
+  time: string;
+  data: {
+    instant: { details: { air_temperature?: number; wind_speed?: number } };
+    next_1_hours?: MetNoPeriod;
+    next_6_hours?: MetNoPeriod;
   };
-  daily: {
-    time: string[];
-    weather_code: (number | null)[];
-    temperature_2m_max: (number | null)[];
-    temperature_2m_min: (number | null)[];
-    precipitation_sum: (number | null)[];
-  };
+}
+
+export interface MetNoForecast {
+  properties: { timeseries: MetNoEntry[] };
 }
