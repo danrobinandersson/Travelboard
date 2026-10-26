@@ -18,6 +18,15 @@ export class WeatherError extends Error {
 
 const cache = new Map<string, { data: WeatherResponse; expires: number }>();
 
+async function fetchWithRetry(url: string, attempts = 3): Promise<Response> {
+  for (let i = 1; i <= attempts; i++) {
+    const response = await fetch(url);
+    if (response.status !== 429 || i === attempts) return response;
+    await new Promise((resolve) => setTimeout(resolve, 1000 * i)); // wait 1s, then 2s
+  }
+  throw new WeatherError("Weather data is not available right now", 502);
+}
+
 export async function getWeather(
   latitude: number,
   longitude: number,
@@ -51,9 +60,13 @@ export async function getWeather(
     forecast_days: "7",
   });
 
-  const response = await fetch(`${OPEN_METEO_URL}?${params}`);
+  const response = await fetchWithRetry(`${OPEN_METEO_URL}?${params}`);
   if (!response.ok) {
-    console.error(`Open-Meteo responded with status ${response.status}`);
+    const body = await response.text();
+    console.error(
+      `Open-Meteo responded with status ${response.status}: ${body}`,
+    );
+    if (hit) return hit.data; // serve old data instead of an error
     throw new WeatherError("Weather data is not available right now", 502);
   }
 
