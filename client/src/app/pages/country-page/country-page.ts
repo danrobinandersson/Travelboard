@@ -5,10 +5,11 @@ import { RouterLink } from '@angular/router';
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
+import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 
 @Component({
   selector: 'app-country-page',
-  imports: [RouterLink, ExchangeRateWidget],
+  imports: [RouterLink, ExchangeRateWidget, WeatherWidget],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })
