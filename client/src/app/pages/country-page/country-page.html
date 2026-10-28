@@ -1,0 +1,24 @@
+<a routerLink="/">Back to search</a>
+
+@if (loading()) {
+  <p>Loading...</p>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+} @else if (country(); as c) {
+  <header class="country-header">
+    <img class="flag" [src]="c.flag" alt="" width="48" />
+    <h2>{{ c.name }}</h2>
+  </header>
+
+  @if (currency(); as target) {
+    <app-exchange-rate-widget [target]="target" />
+  } @else {
+    <p>Exchange rates aren't available for this country.</p>
+  }
+
+  @if (c.coordinates; as coords) {
+    <app-weather-widget [latitude]="coords.lat" [longitude]="coords.lng" />
+  } @else {
+    <p>Weather isn't available for this country.</p>
+  }
+}

@@ -7,7 +7,7 @@ export interface Currency {
 
 export interface Coordinates {
   lat: number;
-  lgn: number;
+  lng: number;
 }
 
 export interface Country {

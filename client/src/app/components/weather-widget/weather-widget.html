@@ -1,0 +1,39 @@
+<section class="widget">
+  <h2>Weather</h2>
+
+  @if (loading()) {
+    <p>Loading...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else if (data(); as weather) {
+    <div class="current">
+      <span class="icon">{{ currentInfo().icon }}</span>
+      <div>
+        <p class="temp">{{ (weather.current.temperature | number: '1.0-0') ?? '–' }} °C</p>
+        <p class="meta">
+          {{ currentInfo().text }} · Wind
+          {{ (weather.current.windSpeed | number: '1.0-0') ?? '–' }} m/s
+        </p>
+      </div>
+    </div>
+
+    <ul class="days">
+      @for (day of days(); track day.date) {
+        <li>
+          <span class="day-name">{{ day.date | date: 'EEE d MMM' }}</span>
+          <span class="day-icon" [title]="day.text">{{ day.icon }}</span>
+          <span class="day-temp">
+            {{ (day.tempMin | number: '1.0-0') ?? '–' }}° /
+            {{ (day.tempMax | number: '1.0-0') ?? '–' }}°
+          </span>
+          <span class="day-rain">{{ (day.precipitation | number: '1.0-1') ?? '–' }} mm</span>
+        </li>
+      }
+    </ul>
+  }
+
+  <p class="credit">
+    Weather data from
+    <a href="https://api.met.no/" target="_blank" rel="noopener">MET Norway</a>
+  </p>
+</section>

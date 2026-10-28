@@ -1,17 +1,5 @@
 <app-header />
 <main class="content">
   <router-outlet />
-  <!-- Temporary: lives here until we have a country dashboard page -->
-   <app-country-picker (countrySelected)="selected.set($event)" />
-
-  @if (selected(); as country) {
-    <h2>{{ country.name }}</h2>
-    @if (currency(); as target) {
-      <app-exchange-rate-widget [target]="target" />
-    } @else {
-      <p>Exchange rates aren't available for this country.</p>
-    }
-  }
-
 </main>
 <app-footer />
