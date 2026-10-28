@@ -26,6 +26,14 @@ export class CountryPage {
   // Only the first currency is used for now
   protected readonly currency = computed(() => this.country()?.currencies[0]?.code ?? null);
 
+  protected readonly weatherHeading = computed(() => {
+    const c = this.country();
+    if (!c) return 'Weather';
+    return c.coordinatesSource === 'capital' && c.capital
+      ? `Weather in ${c.capital}`
+      : `Weather near the centre of ${c.name}`;
+  });
+
   constructor() {
     // Runs again when the code changes, e.g. /country/SE -> /country/NO
     // (the router reuses this component instead of creating a new one)

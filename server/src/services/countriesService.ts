@@ -24,6 +24,8 @@ function toCountry(c: RestCountry): Country {
   const capital =
     c.capitals?.find((cap) => cap.attributes.primary) ?? c.capitals?.[0];
 
+  const capitalCoords = capital?.coordinates;
+  const coordinates = capitalCoords ?? c.coordinates ?? null;
   return {
     code: c.codes.alpha_2,
     name: c.names.common,
@@ -31,6 +33,11 @@ function toCountry(c: RestCountry): Country {
     currencies: c.currencies ?? [],
     capital: capital?.name ?? null,
     coordinates: capital?.coordinates ?? c.coordinates ?? null,
+    coordinatesSource: capitalCoords
+      ? "capital"
+      : coordinates
+        ? "country"
+        : null,
     population: c.population ?? null,
   };
 }

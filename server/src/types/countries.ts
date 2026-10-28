@@ -17,6 +17,7 @@ export interface Country {
   currencies: Currency[];
   capital: string | null;
   coordinates: Coordinates | null; // capital's, or the country's centre as a fallback
+  coordinatesSource: "capital" | "country" | null; // where the coordinates came from
   population: number | null;
 }
 

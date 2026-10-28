@@ -17,7 +17,11 @@
   }
 
   @if (c.coordinates; as coords) {
-    <app-weather-widget [latitude]="coords.lat" [longitude]="coords.lng" />
+    <app-weather-widget
+      [heading]="weatherHeading()"
+      [latitude]="coords.lat"
+      [longitude]="coords.lng"
+    />
   } @else {
     <p>Weather isn't available for this country.</p>
   }
