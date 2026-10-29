@@ -18,4 +18,6 @@ export interface Country {
   coordinates: Coordinates | null;
   coordinatesSource: 'capital' | 'country' | null;
   population: number | null;
+  region: string | null;
+  languages: string[];
 }

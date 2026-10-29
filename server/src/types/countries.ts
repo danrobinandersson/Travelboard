@@ -19,6 +19,8 @@ export interface Country {
   coordinates: Coordinates | null; // capital's, or the country's centre as a fallback
   coordinatesSource: "capital" | "country" | null; // where the coordinates came from
   population: number | null;
+  region: string | null;
+  languages: string[];
 }
 
 // What REST Countries v5 sends
@@ -34,6 +36,8 @@ export interface RestCountry {
   }[];
   coordinates?: Coordinates;
   population?: number;
+  region?: string;
+  languages?: { name: string }[];
 }
 
 export interface RestCountriesResponse {

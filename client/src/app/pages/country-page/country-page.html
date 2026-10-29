@@ -10,6 +10,8 @@
     <h2>{{ c.name }}</h2>
   </header>
 
+  <app-facts-widget [country]="c" />
+
   @if (currency(); as target) {
     <app-exchange-rate-widget [target]="target" />
   } @else {
