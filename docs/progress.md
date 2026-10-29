@@ -19,7 +19,7 @@ Sprint 2 leftovers are carried over (marked below).
 - Routing: home page with the picker, and a country page at `/country/:code` with the exchange rate widget
 - `vercel.json` so refreshing a page on Vercel doesn't give a 404
 - Chart and grid library chosen and in use: ECharts (charts), AG Grid (data grid), Angular Material (UI)
-- Weather: `GET /api/weather?latitude=..&longitude=..` (MET Norway, 30 min cache, serves an expired cache entry if a fetch fails). Server only, no client widget yet
+- Weather: `GET /api/weather` (MET Norway, 30 min cache) and a weather widget on the country page with current weather, a 7-day forecast and the MET Norway credit. The heading says if it is the capital or the country centre
 - Deployment: server on Render, client on Vercel, environment files for the API URL (`client/src/environments/`), server build/start scripts
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
@@ -27,10 +27,9 @@ Sprint 2 leftovers are carried over (marked below).
 - (nothing)
 
 ## Next
-- [ ] Verify on Render: `/api/weather?latitude=59.33&longitude=18.07` works
+- [ ] Verify on Render: the weather widget works on the deployed site
 - [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
 - [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
-- [ ] Weather widget: client service and model, map MET `symbol` strings to text/icons, use `country.coordinates` (can be null), show "Weather data from MET Norway" with a link to https://api.met.no/ (required by MET)
 - [ ] Country facts widget (data already in `Country`)
 - [ ] Holidays widget (test Nager.Date first)
 - [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server

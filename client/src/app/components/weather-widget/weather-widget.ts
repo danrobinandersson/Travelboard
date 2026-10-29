@@ -16,6 +16,7 @@ export class WeatherWidget {
 
   readonly latitude = input.required<number>();
   readonly longitude = input.required<number>();
+  readonly heading = input('Weather');
 
   protected readonly data = signal<WeatherResponse | null>(null);
   protected readonly loading = signal(true);

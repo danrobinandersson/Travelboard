@@ -8,7 +8,7 @@ const BASE_URL = "https://api.restcountries.com/countries/v5";
 const PAGE_SIZE = 100; //free plan maximum
 const CACHE_TTL = 24 * 60 * 60 * 1000; // one day, in milliseconds
 const FIELDS =
-  "names.common,codes.alpha_2,currencies,flag.url_svg,capitals,coordinates,population";
+  "names.common,codes.alpha_2,currencies,flag.url_svg,capitals,coordinates,population,region,languages";
 
 export class CountriesError extends Error {
   status: number;
@@ -24,6 +24,8 @@ function toCountry(c: RestCountry): Country {
   const capital =
     c.capitals?.find((cap) => cap.attributes.primary) ?? c.capitals?.[0];
 
+  const capitalCoords = capital?.coordinates;
+  const coordinates = capitalCoords ?? c.coordinates ?? null;
   return {
     code: c.codes.alpha_2,
     name: c.names.common,
@@ -31,7 +33,14 @@ function toCountry(c: RestCountry): Country {
     currencies: c.currencies ?? [],
     capital: capital?.name ?? null,
     coordinates: capital?.coordinates ?? c.coordinates ?? null,
+    coordinatesSource: capitalCoords
+      ? "capital"
+      : coordinates
+        ? "country"
+        : null,
     population: c.population ?? null,
+    region: c.region ?? null,
+    languages: c.languages?.map((language) => language.name) ?? [],
   };
 }
 
