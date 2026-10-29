@@ -1,0 +1,9 @@
+<section class="facts">
+  <h2>Facts about {{ country().name }}</h2>
+
+  <ul>
+    <li>Capital: {{ country().capital ?? 'None' }}</li>
+    <li>Region: {{ country().region ?? 'Unknown' }}</li>
+    <li>Population: {{ (country().population | number) ?? 'Unknown' }}</li>
+  </ul>
+</section>

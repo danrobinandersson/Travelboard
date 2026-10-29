@@ -6,10 +6,11 @@ import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchan
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
+import { FactsWidget } from '../../components/facts-widget/facts-widget';
 
 @Component({
   selector: 'app-country-page',
-  imports: [RouterLink, ExchangeRateWidget, WeatherWidget],
+  imports: [RouterLink, ExchangeRateWidget, WeatherWidget, FactsWidget],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })
