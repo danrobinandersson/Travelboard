@@ -1,9 +1,33 @@
-<section class="facts">
+<section class="widget">
   <h2>Facts about {{ country().name }}</h2>
 
-  <ul>
-    <li>Capital: {{ country().capital ?? 'None' }}</li>
-    <li>Region: {{ country().region ?? 'Unknown' }}</li>
-    <li>Population: {{ (country().population | number) ?? 'Unknown' }}</li>
+  <ul class="facts">
+    <li><span class="label">Capital:</span> {{ country().capital ?? 'None' }}</li>
+    <li><span class="label">Region:</span> {{ country().region ?? 'Unknown' }}</li>
+    <li>
+      <span class="label">Population:</span> {{ (country().population | number) ?? 'Unknown' }}
+    </li>
+    <li>
+      <span class="label">Languages:</span>
+      @for (language of country().languages; track language) {
+        {{ language }}
+        @if (!$last) {
+          ,
+        }
+      } @empty {
+        None
+      }
+    </li>
+    <li>
+      <span class="label">Currencies:</span>
+      @for (currency of country().currencies; track currency.code) {
+        {{ currency.name }} ({{ currency.code }})
+        @if (!$last) {
+          ,
+        }
+      } @empty {
+        None
+      }
+    </li>
   </ul>
 </section>

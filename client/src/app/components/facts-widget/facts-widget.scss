@@ -1,0 +1,21 @@
+.widget {
+  max-width: 30rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.facts {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.facts li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.label {
+  font-weight: bold;
+}
