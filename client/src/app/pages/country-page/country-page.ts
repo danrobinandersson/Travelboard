@@ -7,10 +7,11 @@ import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
+import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
 
 @Component({
   selector: 'app-country-page',
-  imports: [RouterLink, ExchangeRateWidget, WeatherWidget, FactsWidget],
+  imports: [RouterLink, ExchangeRateWidget, WeatherWidget, FactsWidget, HolidaysWidget],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })

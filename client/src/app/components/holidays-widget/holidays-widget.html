@@ -1,0 +1,15 @@
+<section class="widget">
+  <h2>Public holidays</h2>
+
+  @if (loading()) {
+    <p>Loading...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else if (holidays().length === 0) {
+    <p>No holiday data for this country.</p>
+  } @else {
+    <div class="grid-container">
+      <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
+    </div>
+  }
+</section>
