@@ -1,3 +1,15 @@
+.widgets {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 60rem) {
+  .widgets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .country-header {
   display: flex;
   align-items: center;

@@ -10,21 +10,25 @@
     <h2>{{ c.name }}</h2>
   </header>
 
-  <app-facts-widget [country]="c" />
+  <div class="widgets">
+    <app-facts-widget [country]="c" />
 
-  @if (currency(); as target) {
-    <app-exchange-rate-widget [target]="target" />
-  } @else {
-    <p>Exchange rates aren't available for this country.</p>
-  }
+    @if (currency(); as target) {
+      <app-exchange-rate-widget [target]="target" />
+    } @else {
+      <p>Exchange rates aren't available for this country.</p>
+    }
 
-  @if (c.coordinates; as coords) {
-    <app-weather-widget
-      [heading]="weatherHeading()"
-      [latitude]="coords.lat"
-      [longitude]="coords.lng"
-    />
-  } @else {
-    <p>Weather isn't available for this country.</p>
-  }
+    @if (c.coordinates; as coords) {
+      <app-weather-widget
+        [heading]="weatherHeading()"
+        [latitude]="coords.lat"
+        [longitude]="coords.lng"
+      />
+    } @else {
+      <p>Weather isn't available for this country.</p>
+    }
+
+    <app-holidays-widget [countryCode]="c.code" />
+  </div>
 }
