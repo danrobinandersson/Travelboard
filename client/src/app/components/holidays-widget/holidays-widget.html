@@ -8,8 +8,16 @@
   } @else if (holidays().length === 0) {
     <p>No holiday data for this country.</p>
   } @else {
-    <div class="grid-container">
-      <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
-    </div>
+    <mat-slide-toggle [checked]="showTable()" (change)="showTable.set($event.checked)">
+      Toggle view
+    </mat-slide-toggle>
+
+    @if (showTable()) {
+      <div class="grid-container">
+        <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
+      </div>
+    } @else {
+      <div echarts [options]="chartOptions()" class="chart"></div>
+    }
   }
 </section>

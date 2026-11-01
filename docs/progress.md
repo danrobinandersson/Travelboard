@@ -21,6 +21,8 @@ Sprint 2 leftovers are carried over (marked below).
 - Chart and grid library chosen and in use: ECharts (charts), AG Grid (data grid), Angular Material (UI)
 - Weather: `GET /api/weather` (MET Norway, 30 min cache) and a weather widget on the country page with current weather, a 7-day forecast and the MET Norway credit. The heading says if it is the capital or the country centre
 - Deployment: server on Render, client on Vercel, environment files for the API URL (`client/src/environments/`), server build/start scripts
+- Facts widget: capital, population, region, languages and currencies
+- Holidays: Nager.Date service (24 h cache), `GET /api/holidays`, widget with a chart (holidays per month) and an AG Grid table with sorting and filtering
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
@@ -30,8 +32,6 @@ Sprint 2 leftovers are carried over (marked below).
 - [ ] Verify on Render: the weather widget works on the deployed site
 - [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
 - [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
-- [ ] Country facts widget (data already in `Country`)
-- [ ] Holidays widget (test Nager.Date first)
 - [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server
 - [ ] Compare view for 2-3 countries (no login)
 - [ ] Supabase login and favourites
@@ -41,7 +41,6 @@ Sprint 2 leftovers are carried over (marked below).
 - [ ] Delete merged feature branches (optional)
 
 ## Not tested yet
-- Nager.Date (holidays)
 - World Bank API (comparison indicators)
 - Sights API (OpenTripMap or Wikivoyage, Should)
 
