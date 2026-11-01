@@ -19,6 +19,7 @@
     "@angular/material": "^21.2.14",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "@supabase/supabase-js": "^2.118.0",
     "ag-grid-angular": "^36.2.0",
     "echarts": "^6.1.0",
     "ngx-echarts": "^21.0.0",
