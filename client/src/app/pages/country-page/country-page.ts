@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
+import { AuthService } from '../../services/auth-service';
+import { FavouritesService } from '../../services/favourites-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
 import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
@@ -17,6 +19,8 @@ import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget
 })
 export class CountryPage {
   private readonly countriesService = inject(CountriesService);
+  protected readonly auth = inject(AuthService);
+  protected readonly favourites = inject(FavouritesService);
 
   // Filled in by the router from the ":code" part of /country/:code
   readonly code = input.required<string>();
@@ -35,6 +39,14 @@ export class CountryPage {
       ? `Weather in ${c.capital}`
       : `Weather near the centre of ${c.name}`;
   });
+
+  protected toggleFavourite(code: string): void {
+    if (this.favourites.isFavourite(code)) {
+      void this.favourites.remove(code);
+    } else {
+      void this.favourites.add(code);
+    }
+  }
 
   constructor() {
     // Runs again when the code changes, e.g. /country/SE -> /country/NO
