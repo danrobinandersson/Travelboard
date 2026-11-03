@@ -1,0 +1,11 @@
+<h2>My favourites</h2>
+
+@if (favourites.codes().length === 0) {
+  <p>You have no favourites yet. Open a country and click Save.</p>
+} @else {
+  <ul>
+    @for (code of favourites.codes(); track code) {
+      <li><a [routerLink]="['/country', code]">{{ code }}</a></li>
+    }
+  </ul>
+}
