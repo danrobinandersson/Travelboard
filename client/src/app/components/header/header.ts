@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -7,4 +8,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {}
+export class Header {
+  protected readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
+  protected async logout(): Promise<void> {
+    await this.auth.logout();
+    await this.router.navigateByUrl('/');
+  }
+}

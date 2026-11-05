@@ -3,15 +3,18 @@
 Update after every task. Check this before starting one.
 
 ## Current sprint
+
 Sprint 3 (Oct 26-Nov 1): Auth and deploy. Supervision Nov 4.
 Sprint 2 leftovers are carried over (marked below).
 
 ## Live
+
 - Server: https://travelboard.onrender.com (Render free plan, sleeps when idle, first request takes 30-60 s, wake it before presenting)
 - Client: Vercel (add link here)
 - Repo: https://github.com/danrobinandersson/Travelboard
 
 ## Done
+
 - Angular client, Express server, CLAUDE.md, project docs, header, footer, styling
 - Exchange rates: Frankfurter v2 service, `GET /api/rates`, widget with loading/error states, chart/grid toggle, re-fetches when the country changes
 - Countries: REST Countries v5 service (24 h cache), `GET /api/countries` and `/api/countries/:code`, now with capital, coordinates and population
@@ -23,33 +26,40 @@ Sprint 2 leftovers are carried over (marked below).
 - Deployment: server on Render, client on Vercel, environment files for the API URL (`client/src/environments/`), server build/start scripts
 - Facts widget: capital, population, region, languages and currencies
 - Holidays: Nager.Date service (24 h cache), `GET /api/holidays`, widget with a chart (holidays per month) and an AG Grid table with sorting and filtering
+- Supabase login: auth service, `/login` page (log in and register), header shows email and log out, `authGuard` ready to use. Email confirmation is off
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
+
 - (nothing)
 
 ## Next
+
 - [ ] Verify on Render: the weather widget works on the deployed site
 - [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
 - [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
 - [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server
 - [ ] Compare view for 2-3 countries (no login)
-- [ ] Supabase login and favourites
+- [ ] Favourites
+- [ ] Test Register on the login page (hit Supabase's email rate limit, test user was added in the dashboard)
 - [ ] AI chat (Should)
 - [ ] Tests, README
 - [ ] Add GitHub, Vercel and Render links to `examensarbete.md` (before Nov 16)
 - [ ] Delete merged feature branches (optional)
 
 ## Not tested yet
+
 - World Bank API (comparison indicators)
 - Sights API (OpenTripMap or Wikivoyage, Should)
 
 ## Later
+
 - Sprint 4 (Nov 2-8): AI assistant (Should). Supervision Nov 4
 - Sprint 5 (Nov 9-15): polish, README, result section. Submit before Nov 16
 - Presentation Nov 19-20
 
 ## Known limitations
+
 - The exchange rate widget uses only a country's first currency (`currencies[0]`)
 - Exchange rates only exist for about 30 major currencies (Frankfurter), so some countries show "not available"
 - Initial bundle is large (AG Grid, ECharts, Material), so the budget in `angular.json` was raised to warn 3 MB / error 4 MB. Possible fix later: lazy-load the dashboard route
@@ -57,6 +67,7 @@ Sprint 2 leftovers are carried over (marked below).
 - Weather daily rows are grouped by UTC date, so the first day is partial
 
 ## Decisions
+
 - 2026-10-26: The country page loads its data from the URL, so refresh and shared links work
 - 2026-10-14: AI chat is Should, not part of the MVP
 - 2026-10-14: Compare view does not require login

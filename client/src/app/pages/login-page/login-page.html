@@ -1,0 +1,36 @@
+<section class="login">
+  <h2>{{ registerMode() ? 'Register' : 'Log in' }}</h2>
+
+  <form (ngSubmit)="submit()">
+    <label>
+      Email
+      <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
+    </label>
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        minlength="6"
+        [autocomplete]="registerMode() ? 'new-password' : 'current-password'"
+      />
+    </label>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+    @if (info()) {
+      <p>{{ info() }}</p>
+    }
+
+    <button type="submit" [disabled]="busy()">
+      {{ registerMode() ? 'Create account' : 'Log in' }}
+    </button>
+  </form>
+
+  <button type="button" class="link" (click)="registerMode.set(!registerMode())">
+    {{ registerMode() ? 'Already have an account? Log in' : 'No account? Register' }}
+  </button>
+</section>

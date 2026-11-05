@@ -1,0 +1,19 @@
+<h2>My favourites</h2>
+
+@if (loading()) {
+  <p>Loading...</p>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+} @else if (favouriteCountries().length === 0) {
+  <p>You have no favourites yet. Open a country and click Save.</p>
+} @else {
+  <ul>
+    @for (country of favouriteCountries(); track country.code) {
+      <li>
+        <img [src]="country.flag" alt="" width="24" />
+        <a [routerLink]="['/country', country.code]">{{ country.name }}</a>
+        <button type="button" (click)="favourites.remove(country.code)">Remove</button>
+      </li>
+    }
+  </ul>
+}

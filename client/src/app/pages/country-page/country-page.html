@@ -8,6 +8,11 @@
   <header class="country-header">
     <img class="flag" [src]="c.flag" alt="" width="48" />
     <h2>{{ c.name }}</h2>
+    @if (auth.user()) {
+      <button type="button" class="favourite" (click)="toggleFavourite(c.code)">
+        {{ favourites.isFavourite(c.code) ? '♥ Saved' : '♡ Save' }}
+      </button>
+    }
   </header>
 
   <div class="widgets">
