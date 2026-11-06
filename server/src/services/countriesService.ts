@@ -8,7 +8,9 @@ const BASE_URL = "https://api.restcountries.com/countries/v5";
 const PAGE_SIZE = 100; //free plan maximum
 const CACHE_TTL = 24 * 60 * 60 * 1000; // one day, in milliseconds
 const FIELDS =
-  "names.common,codes.alpha_2,currencies,flag.url_svg,capitals,coordinates,population,region,languages";
+  "names.common,codes.alpha_2,currencies,flag.url_svg,capitals,coordinates,population,region,languages," +
+  "subregion,area.kilometers,cars.driving_side,calling_codes,timezones," +
+  "memberships.eu,memberships.schengen,units.measurement_system,descriptions.short";
 
 export class CountriesError extends Error {
   status: number;
@@ -41,6 +43,15 @@ function toCountry(c: RestCountry): Country {
     population: c.population ?? null,
     region: c.region ?? null,
     languages: c.languages?.map((language) => language.name) ?? [],
+    subregion: c.subregion ?? null,
+    areaKm2: c.area?.kilometers ?? null,
+    drivingSide: c.cars?.driving_side ?? null,
+    callingCodes: c.calling_codes ?? [],
+    timezones: c.timezones ?? [],
+    inEu: c.memberships?.eu ?? null,
+    inSchengen: c.memberships?.schengen ?? null,
+    measurementSystem: c.units?.measurement_system ?? null,
+    description: c.descriptions?.short ?? null,
   };
 }
 
