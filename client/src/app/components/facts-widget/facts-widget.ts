@@ -10,4 +10,9 @@ import { DecimalPipe } from '@angular/common';
 })
 export class FactsWidget {
   country = input.required<Country>();
+  // true -> "Yes", false -> "No", null -> "Unknown"
+  protected yesNo(value: boolean | null): string {
+    if (value === null) return 'Unknown';
+    return value ? 'Yes' : 'No';
+  }
 }
