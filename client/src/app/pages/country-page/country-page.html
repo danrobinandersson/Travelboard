@@ -17,7 +17,6 @@
 
   <div class="widgets">
     <app-facts-widget [country]="c" />
-    <app-about-widget [countryName]="c.name" />
 
     @if (currency(); as target) {
       <app-exchange-rate-widget [target]="target" />

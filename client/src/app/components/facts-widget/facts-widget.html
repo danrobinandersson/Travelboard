@@ -1,62 +1,74 @@
 <section class="widget">
-  <h2>Facts about {{ country().name }}</h2>
+  <h2>{{ showAbout() ? 'About' : 'Facts about' }} {{ country().name }}</h2>
 
-  @if (country().description; as text) {
-    <p class="description">{{ text }}</p>
+  <mat-slide-toggle [checked]="showAbout()" (change)="showAbout.set($event.checked)">
+    Show Wikipedia text
+  </mat-slide-toggle>
+
+  @if (showAbout()) {
+    <app-about-widget [countryName]="country().name" />
+  } @else {
+    @if (country().description; as text) {
+      <p class="description">{{ text }}</p>
+    }
+
+    <ul class="facts">
+      <li><span class="label">Capital:</span> {{ country().capital ?? 'None' }}</li>
+      <li><span class="label">Region:</span> {{ country().region ?? 'Unknown' }}</li>
+      <li><span class="label">Subregion:</span> {{ country().subregion ?? 'Unknown' }}</li>
+      <li>
+        <span class="label">Population:</span> {{ (country().population | number) ?? 'Unknown' }}
+      </li>
+      <li>
+        <span class="label">Area:</span>
+        @if (country().areaKm2 !== null) {
+          {{ country().areaKm2 | number }} km²
+        } @else {
+          Unknown
+        }
+      </li>
+      <li>
+        <span class="label">Languages:</span>
+        @for (language of country().languages; track language) {
+          {{ language }}
+          @if (!$last) {
+            ,
+          }
+        } @empty {
+          None
+        }
+      </li>
+      <li>
+        <span class="label">Currencies:</span>
+        @for (currency of country().currencies; track currency.code) {
+          {{ currency.name }} ({{ currency.code }})
+          @if (!$last) {
+            ,
+          }
+        } @empty {
+          None
+        }
+      </li>
+      <li><span class="label">Drives on the:</span> {{ country().drivingSide ?? 'Unknown' }}</li>
+      <li>
+        <span class="label">Calling code:</span>
+        @for (code of country().callingCodes; track code) {
+          +{{ code }}
+          @if (!$last) {
+            ,
+          }
+        } @empty {
+          Unknown
+        }
+      </li>
+      <li>
+        <span class="label">Time zone:</span> {{ country().timezones.join(', ') || 'Unknown' }}
+      </li>
+      <li><span class="label">EU member:</span> {{ yesNo(country().inEu) }}</li>
+      <li><span class="label">Schengen:</span> {{ yesNo(country().inSchengen) }}</li>
+      <li>
+        <span class="label">Measurements:</span> {{ country().measurementSystem ?? 'Unknown' }}
+      </li>
+    </ul>
   }
-
-  <ul class="facts">
-    <li><span class="label">Capital:</span> {{ country().capital ?? 'None' }}</li>
-    <li><span class="label">Region:</span> {{ country().region ?? 'Unknown' }}</li>
-    <li><span class="label">Subregion:</span> {{ country().subregion ?? 'Unknown' }}</li>
-    <li>
-      <span class="label">Population:</span> {{ (country().population | number) ?? 'Unknown' }}
-    </li>
-    <li>
-      <span class="label">Area:</span>
-      @if (country().areaKm2 !== null) {
-        {{ country().areaKm2 | number }} km²
-      } @else {
-        Unknown
-      }
-    </li>
-    <li>
-      <span class="label">Languages:</span>
-      @for (language of country().languages; track language) {
-        {{ language }}
-        @if (!$last) {
-          ,
-        }
-      } @empty {
-        None
-      }
-    </li>
-    <li>
-      <span class="label">Currencies:</span>
-      @for (currency of country().currencies; track currency.code) {
-        {{ currency.name }} ({{ currency.code }})
-        @if (!$last) {
-          ,
-        }
-      } @empty {
-        None
-      }
-    </li>
-    <li><span class="label">Drives on the:</span> {{ country().drivingSide ?? 'Unknown' }}</li>
-    <li>
-      <span class="label">Calling code:</span>
-      @for (code of country().callingCodes; track code) {
-        +{{ code }}
-        @if (!$last) {
-          ,
-        }
-      } @empty {
-        Unknown
-      }
-    </li>
-    <li><span class="label">Time zone:</span> {{ country().timezones.join(', ') || 'Unknown' }}</li>
-    <li><span class="label">EU member:</span> {{ yesNo(country().inEu) }}</li>
-    <li><span class="label">Schengen:</span> {{ yesNo(country().inSchengen) }}</li>
-    <li><span class="label">Measurements:</span> {{ country().measurementSystem ?? 'Unknown' }}</li>
-  </ul>
 </section>

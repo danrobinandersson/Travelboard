@@ -10,18 +10,10 @@ import { FavouritesService } from '../../services/favourites-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
 import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
-import { AboutWidget } from '../../components/about-widget/about-widget';
 
 @Component({
   selector: 'app-country-page',
-  imports: [
-    RouterLink,
-    ExchangeRateWidget,
-    WeatherWidget,
-    FactsWidget,
-    HolidaysWidget,
-    AboutWidget,
-  ],
+  imports: [RouterLink, ExchangeRateWidget, WeatherWidget, FactsWidget, HolidaysWidget],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })
