@@ -9,8 +9,9 @@
     <img class="flag" [src]="c.flag" alt="" width="48" />
     <h2>{{ c.name }}</h2>
     @if (auth.user()) {
-      <button type="button" class="favourite" (click)="toggleFavourite(c.code)">
-        {{ favourites.isFavourite(c.code) ? '♥ Saved' : '♡ Save' }}
+      <button matButton="outlined" type="button" (click)="toggleFavourite(c.code)">
+        <mat-icon>{{ favourites.isFavourite(c.code) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        {{ favourites.isFavourite(c.code) ? 'Saved' : 'Save' }}
       </button>
     }
   </header>
@@ -27,7 +28,9 @@
       <app-place-search [countryCode]="c.code" (placeSelected)="selectedPlace.set($event)" />
 
       @if (selectedPlace()) {
-        <button type="button" (click)="selectedPlace.set(null)">Reset location</button>
+        <button matButton="outlined" type="button" (click)="selectedPlace.set(null)">
+          Reset location
+        </button>
       }
 
       @if (weatherPoint(); as coords) {

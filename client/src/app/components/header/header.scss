@@ -36,3 +36,8 @@ nav {
   font-size: 0.9rem;
   opacity: 0.85;
 }
+
+// Material buttons read their colours from these variables
+button {
+  --mat-button-text-label-text-color: white;
+}

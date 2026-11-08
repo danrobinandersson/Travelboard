@@ -5,7 +5,10 @@
     placeholder="Search a city in this country"
     (keyup.enter)="search(box.value)"
   />
-  <button type="button" (click)="search(box.value)">Search</button>
+  <button matButton="filled" type="button" (click)="search(box.value)">
+    <mat-icon>search</mat-icon>
+    Search
+  </button>
 </div>
 
 @if (loading()) {
@@ -19,7 +22,7 @@
     <ul class="results">
       @for (place of results(); track place.id) {
         <li>
-          <button type="button" (click)="choose(place)">
+          <button matButton="text" type="button" (click)="choose(place)">
             {{ place.region ? place.name + ', ' + place.region : place.name }}
           </button>
         </li>

@@ -12,7 +12,14 @@
       <li>
         <img [src]="country.flag" alt="" width="24" />
         <a [routerLink]="['/country', country.code]">{{ country.name }}</a>
-        <button type="button" (click)="favourites.remove(country.code)">Remove</button>
+        <button
+          matIconButton
+          type="button"
+          [attr.aria-label]="'Remove ' + country.name + ' from favourites'"
+          (click)="favourites.remove(country.code)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
       </li>
     }
   </ul>

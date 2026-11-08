@@ -1,11 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import type { Place } from '../../models/place';
 import { PlacesService } from '../../services/places-service';
 
 @Component({
   selector: 'app-place-search',
-  imports: [],
+  imports: [MatButton, MatIcon],
   templateUrl: './place-search.html',
   styleUrl: './place-search.scss',
 })

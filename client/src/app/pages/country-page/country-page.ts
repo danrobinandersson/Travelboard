@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
@@ -17,6 +19,8 @@ import type { Place } from '../../models/place';
   selector: 'app-country-page',
   imports: [
     RouterLink,
+    MatButton,
+    MatIcon,
     ExchangeRateWidget,
     WeatherWidget,
     FactsWidget,
