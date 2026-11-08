@@ -1,21 +1,38 @@
 .header {
-  background: #2e7d32;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(135deg, var(--tb-primary-dark), var(--tb-primary));
   color: white;
-  padding: 1rem;
-  text-align: center;
+  box-shadow: var(--tb-shadow);
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: 0.02em;
+  }
 }
 
 nav {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
 
   a {
     color: white;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
 .email {
   font-size: 0.9rem;
+  opacity: 0.85;
 }
