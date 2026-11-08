@@ -1,11 +1,11 @@
 .search {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.search input {
+.search mat-form-field {
   flex: 1;
-  padding: 0.4rem 0.6rem;
 }
 
 .error {

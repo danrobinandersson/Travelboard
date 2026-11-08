@@ -1,10 +1,8 @@
 <div class="search">
-  <input
-    #box
-    type="search"
-    placeholder="Search a city in this country"
-    (keyup.enter)="search(box.value)"
-  />
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Search a city in this country</mat-label>
+    <input matInput #box type="search" (keyup.enter)="search(box.value)" />
+  </mat-form-field>
   <button matButton="filled" type="button" (click)="search(box.value)">
     <mat-icon>search</mat-icon>
     Search

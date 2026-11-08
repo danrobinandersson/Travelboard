@@ -1,22 +1,44 @@
 <section class="login">
   <h2>{{ registerMode() ? 'Register' : 'Log in' }}</h2>
 
-  <form (ngSubmit)="submit()">
-    <label>
-      Email
-      <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
-    </label>
-    <label>
-      Password
+  <form #form="ngForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
       <input
+        matInput
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        #emailField="ngModel"
+        required
+        email
+        autocomplete="email"
+      />
+      @if (emailField.hasError('required')) {
+        <mat-error>Email is required</mat-error>
+      } @else if (emailField.hasError('email')) {
+        <mat-error>Enter a valid email address</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
         type="password"
         name="password"
         [(ngModel)]="password"
+        #passwordField="ngModel"
         required
         minlength="6"
         [autocomplete]="registerMode() ? 'new-password' : 'current-password'"
       />
-    </label>
+      @if (passwordField.hasError('required')) {
+        <mat-error>Password is required</mat-error>
+      } @else if (passwordField.hasError('minlength')) {
+        <mat-error>At least 6 characters</mat-error>
+      }
+    </mat-form-field>
 
     @if (error()) {
       <p class="error">{{ error() }}</p>
@@ -25,12 +47,12 @@
       <p>{{ info() }}</p>
     }
 
-    <button type="submit" [disabled]="busy()">
+    <button matButton="filled" type="submit" [disabled]="busy() || form.invalid">
       {{ registerMode() ? 'Create account' : 'Log in' }}
     </button>
   </form>
 
-  <button type="button" class="link" (click)="registerMode.set(!registerMode())">
+  <button matButton="text" type="button" (click)="registerMode.set(!registerMode())">
     {{ registerMode() ? 'Already have an account? Log in' : 'No account? Register' }}
   </button>
 </section>
