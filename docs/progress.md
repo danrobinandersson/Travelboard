@@ -4,8 +4,8 @@ Update after every task. Check this before starting one.
 
 ## Current sprint
 
-Sprint 3 (Oct 26-Nov 1): Auth and deploy. Supervision Nov 4.
-Sprint 2 leftovers are carried over (marked below).
+Final stretch. Deadline moved to Nov 16 (changes allowed until Nov 19-20).
+Plan: styling, compare view, map and things to do, show/hide widgets, README.
 
 ## Live
 
@@ -27,6 +27,9 @@ Sprint 2 leftovers are carried over (marked below).
 - Facts widget: capital, population, region, languages and currencies
 - Holidays: Nager.Date service (24 h cache), `GET /api/holidays`, widget with a chart (holidays per month) and an AG Grid table with sorting and filtering
 - Supabase login: auth service, `/login` page (log in and register), header shows email and log out, `authGuard` ready to use. Email confirmation is off
+- Favourites: `favourites` table with RLS, save button on the country page, `/favourites` page (login required), link in the header
+- About text from Wikipedia (`GET /api/about`), shown in the facts widget via a toggle
+- Weather for cities: place search (`GET /api/places`, Open-Meteo geocoding, 24 h cache), pick a city and the weather widget follows, reset goes back to the capital
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
@@ -35,14 +38,15 @@ Sprint 2 leftovers are carried over (marked below).
 
 ## Next
 
-- [ ] Verify on Render: the weather widget works on the deployed site
+- [ ] Verify on Render: weather and city search (Open-Meteo geocoding may be rate limited there)
 - [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
 - [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
 - [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server
-- [ ] Compare view for 2-3 countries (no login)
-- [ ] Favourites
+- [ ] Styling: theme, cards, hero header, widgets of different sizes
+- [ ] Compare view for 2-3 countries (no login): temperature and exchange rate charts plus a grid
+- [ ] Map (Leaflet) and things to do (Wikipedia geosearch)
+- [ ] Show/hide widgets, then drag to reorder (if time)
 - [ ] Test Register on the login page (hit Supabase's email rate limit, test user was added in the dashboard)
-- [ ] AI chat (Should)
 - [ ] Tests, README
 - [ ] Add GitHub, Vercel and Render links to `examensarbete.md` (before Nov 16)
 - [ ] Delete merged feature branches (optional)
@@ -50,12 +54,12 @@ Sprint 2 leftovers are carried over (marked below).
 ## Not tested yet
 
 - World Bank API (comparison indicators)
-- Sights API (OpenTripMap or Wikivoyage, Should)
+- Wikipedia geosearch (things to do)
 
 ## Later
 
-- Sprint 4 (Nov 2-8): AI assistant (Should). Supervision Nov 4
-- Sprint 5 (Nov 9-15): polish, README, result section. Submit before Nov 16
+- AI chat (Should): dropped for now, mention as future work
+- Nov 15: README, result section, deploy. Submit Nov 16
 - Presentation Nov 19-20
 
 ## Known limitations
@@ -67,6 +71,9 @@ Sprint 2 leftovers are carried over (marked below).
 - Weather daily rows are grouped by UTC date, so the first day is partial
 
 ## Decisions
+
+- 2026-11-07: After feedback, priority is styling, compare view, map and things to do. AI chat is dropped for now
+- 2026-11-07: City search uses Open-Meteo geocoding only. The weather itself still comes from MET Norway
 
 - 2026-10-26: The country page loads its data from the URL, so refresh and shared links work
 - 2026-10-14: AI chat is Should, not part of the MVP
