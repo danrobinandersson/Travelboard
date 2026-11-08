@@ -1,0 +1,29 @@
+<div class="search">
+  <input
+    #box
+    type="search"
+    placeholder="Search a city in this country"
+    (keyup.enter)="search(box.value)"
+  />
+  <button type="button" (click)="search(box.value)">Search</button>
+</div>
+
+@if (loading()) {
+  <p>Searching...</p>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+} @else if (searched()) {
+  @if (results().length === 0) {
+    <p>No places found.</p>
+  } @else {
+    <ul class="results">
+      @for (place of results(); track place.id) {
+        <li>
+          <button type="button" (click)="choose(place)">
+            {{ place.region ? place.name + ', ' + place.region : place.name }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+}
