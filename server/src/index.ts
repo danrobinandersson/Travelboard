@@ -6,6 +6,7 @@ import { countriesRouter } from "./routes/countries.js";
 import { weatherRouter } from "./routes/weather.js";
 import { holidaysRouter } from "./routes/holidays.js";
 import { aboutRouter } from "./routes/about.js";
+import { placesRouter } from "./routes/places.js";
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,8 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/about", aboutRouter);
+
+app.use("/api/places", placesRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () =>
