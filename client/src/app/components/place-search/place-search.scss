@@ -1,0 +1,26 @@
+.search {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+}
+
+.error {
+  color: #b00020;
+}
+
+.results {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.results button {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  cursor: pointer;
+}

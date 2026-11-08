@@ -1,0 +1,20 @@
+@if (loading()) {
+  <p>Loading...</p>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+} @else if (data(); as about) {
+  @if (about.description) {
+    <p class="description">{{ about.description }}</p>
+  }
+  <p>{{ about.extract }}</p>
+  <p>
+    <a [href]="about.pageUrl" target="_blank" rel="noopener">Read more on Wikipedia</a>
+  </p>
+}
+
+<p class="credit">
+  Text from Wikipedia, licensed under
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener"
+    >CC BY-SA 4.0</a
+  >
+</p>

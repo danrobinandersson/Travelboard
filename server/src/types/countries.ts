@@ -21,6 +21,15 @@ export interface Country {
   population: number | null;
   region: string | null;
   languages: string[];
+  subregion: string | null; // "Northern Europe"
+  areaKm2: number | null;
+  drivingSide: string | null; // "left" or "right"
+  callingCodes: string[]; // ["46"]
+  timezones: string[]; // ["UTC+01:00"]
+  inEu: boolean | null;
+  inSchengen: boolean | null;
+  measurementSystem: string | null; // "metric"
+  description: string | null; // one short sentence
 }
 
 // What REST Countries v5 sends
@@ -38,6 +47,14 @@ export interface RestCountry {
   population?: number;
   region?: string;
   languages?: { name: string }[];
+  subregion?: string;
+  area?: { kilometers: number };
+  cars?: { driving_side: string };
+  calling_codes?: string[];
+  timezones?: string[];
+  memberships?: { eu: boolean; schengen: boolean };
+  units?: { measurement_system: string };
+  descriptions?: { short: string };
 }
 
 export interface RestCountriesResponse {

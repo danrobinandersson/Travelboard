@@ -23,17 +23,23 @@
     } @else {
       <p>Exchange rates aren't available for this country.</p>
     }
+    <div class="weather-column">
+      <app-place-search [countryCode]="c.code" (placeSelected)="selectedPlace.set($event)" />
 
-    @if (c.coordinates; as coords) {
-      <app-weather-widget
-        [heading]="weatherHeading()"
-        [latitude]="coords.lat"
-        [longitude]="coords.lng"
-      />
-    } @else {
-      <p>Weather isn't available for this country.</p>
-    }
+      @if (selectedPlace()) {
+        <button type="button" (click)="selectedPlace.set(null)">Reset location</button>
+      }
 
+      @if (weatherPoint(); as coords) {
+        <app-weather-widget
+          [heading]="weatherHeading()"
+          [latitude]="coords.lat"
+          [longitude]="coords.lng"
+        />
+      } @else {
+        <p>Weather isn't available for this country.</p>
+      }
+    </div>
     <app-holidays-widget [countryCode]="c.code" />
   </div>
 }
