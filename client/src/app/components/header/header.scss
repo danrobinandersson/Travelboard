@@ -2,42 +2,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  padding: 0.9rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   background: linear-gradient(135deg, var(--tb-primary-dark), var(--tb-primary));
-  color: white;
   box-shadow: var(--tb-shadow);
+}
 
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    letter-spacing: 0.02em;
+.logo {
+  display: flex;
+
+  img {
+    display: block;
   }
 }
 
 nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-
-  a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  // Material icon buttons read their colour from this variable
+  --mat-icon-button-icon-color: white;
 }
 
-.email {
-  font-size: 0.9rem;
-  opacity: 0.85;
-}
-
-// Material buttons read their colours from these variables
-button {
-  --mat-button-text-label-text-color: white;
+.menu-email {
+  display: block;
+  padding: 0.5rem 1rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--tb-muted);
+  border-bottom: 1px solid var(--tb-border);
 }

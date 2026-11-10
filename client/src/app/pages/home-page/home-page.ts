@@ -8,6 +8,7 @@ import { Country } from '../../models/country';
   selector: 'app-home-page',
   imports: [CountryPicker],
   templateUrl: './home-page.html',
+  styleUrl: './home-page.scss',
 })
 export class HomePage {
   private readonly router = inject(Router);

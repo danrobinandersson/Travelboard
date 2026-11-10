@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, MatButton, MatIcon],
+  imports: [RouterLink, MatIconButton, MatIcon, MatMenu, MatMenuItem, MatMenuTrigger, MatTooltip],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
