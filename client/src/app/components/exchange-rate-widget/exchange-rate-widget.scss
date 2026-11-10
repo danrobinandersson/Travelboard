@@ -3,11 +3,11 @@
 }
 
 .date {
-  color: #666;
+  color: var(--tb-muted);
 }
 
 .error {
-  color: #b00020;
+  color: var(--tb-error);
 }
 
 table {

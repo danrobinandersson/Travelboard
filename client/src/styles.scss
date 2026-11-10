@@ -91,26 +91,6 @@ a {
   color: var(--tb-primary);
 }
 
-// Plain buttons (no class). Buttons from Material and AG Grid have classes, so they are untouched.
-button:not([class]) {
-  background: var(--tb-primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.45rem 0.9rem;
-  font: inherit;
-  cursor: pointer;
-
-  &:hover:not(:disabled) {
-    background: var(--tb-primary-dark);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
-}
-
 // Make Material cards follow our tokens
 mat-card {
   --mat-card-elevated-container-color: var(--tb-card);
