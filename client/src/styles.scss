@@ -110,3 +110,9 @@ button:not([class]) {
     cursor: default;
   }
 }
+
+// Make Material cards follow our tokens
+mat-card {
+  --mat-card-elevated-container-color: var(--tb-card);
+  --mat-card-elevated-container-shape: var(--tb-radius);
+}

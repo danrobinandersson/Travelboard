@@ -1,3 +1,4 @@
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { Component, input, signal } from '@angular/core';
 import { Country } from '../../models/country';
 import { DecimalPipe } from '@angular/common';
@@ -6,7 +7,7 @@ import { AboutWidget } from '../about-widget/about-widget';
 
 @Component({
   selector: 'app-facts-widget',
-  imports: [DecimalPipe, MatSlideToggle, AboutWidget],
+  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, DecimalPipe, MatSlideToggle, AboutWidget],
   templateUrl: './facts-widget.html',
   styleUrl: './facts-widget.scss',
 })

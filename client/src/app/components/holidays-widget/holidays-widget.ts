@@ -1,3 +1,4 @@
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import type { Holiday } from '../../models/holiday';
@@ -18,7 +19,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 @Component({
   selector: 'app-holidays-widget',
-  imports: [AgGridAngular, NgxEchartsDirective, MatSlideToggle],
+  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './holidays-widget.html',
   styleUrl: './holidays-widget.scss',

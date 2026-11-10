@@ -1,5 +1,8 @@
-<section class="widget">
-  <h2>{{ heading() }}</h2>
+<mat-card class="widget">
+  <mat-card-header>
+    <mat-card-title>{{ heading() }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
 
   @if (loading()) {
     <p>Loading...</p>
@@ -36,4 +39,5 @@
     Weather data from
     <a href="https://api.met.no/" target="_blank" rel="noopener">MET Norway</a>
   </p>
-</section>
+</mat-card-content>
+</mat-card>

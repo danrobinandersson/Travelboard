@@ -1,3 +1,4 @@
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
@@ -18,7 +19,7 @@ echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
 @Component({
   selector: 'app-exchange-rate-widget',
-  imports: [DecimalPipe, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
+  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, DecimalPipe, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './exchange-rate-widget.html',
   styleUrl: './exchange-rate-widget.scss',

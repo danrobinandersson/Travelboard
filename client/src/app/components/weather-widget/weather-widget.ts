@@ -1,3 +1,4 @@
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
@@ -7,7 +8,7 @@ import { describeSymbol } from '../../utils/weather-symbol';
 
 @Component({
   selector: 'app-weather-widget',
-  imports: [DatePipe, DecimalPipe],
+  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, DatePipe, DecimalPipe],
   templateUrl: './weather-widget.html',
   styleUrl: './weather-widget.scss',
 })
