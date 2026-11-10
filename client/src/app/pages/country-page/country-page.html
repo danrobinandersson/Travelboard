@@ -4,10 +4,19 @@
   <p class="error">{{ error() }}</p>
 } @else if (country(); as c) {
   <header class="country-header">
-    <img class="flag" [src]="c.flag" alt="" width="48" />
-    <h2>{{ c.name }}</h2>
+    <img class="flag" [src]="c.flag" alt="" />
+    <div class="title">
+      <h2>{{ c.name }}</h2>
+      @if (subtitle(); as text) {
+        <p class="subtitle">{{ text }}</p>
+      }
+    </div>
     @if (auth.user()) {
-      <button matButton="outlined" type="button" (click)="toggleFavourite(c.code)">
+      <button
+        [matButton]="favourites.isFavourite(c.code) ? 'filled' : 'outlined'"
+        type="button"
+        (click)="toggleFavourite(c.code)"
+      >
         <mat-icon>{{ favourites.isFavourite(c.code) ? 'favorite' : 'favorite_border' }}</mat-icon>
         {{ favourites.isFavourite(c.code) ? 'Saved' : 'Save' }}
       </button>

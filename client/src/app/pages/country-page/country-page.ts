@@ -53,6 +53,12 @@ export class CountryPage {
     return this.country()?.coordinates ?? null;
   });
 
+  // "Copenhagen · Europe", skipping whatever is missing
+  protected readonly subtitle = computed(() => {
+    const c = this.country();
+    return [c?.capital, c?.region].filter(Boolean).join(' · ');
+  });
+
   protected readonly weatherHeading = computed(() => {
     const place = this.selectedPlace();
     if (place) return `Weather in ${place.name}`;
