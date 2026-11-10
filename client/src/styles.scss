@@ -96,3 +96,74 @@ mat-card {
   --mat-card-elevated-container-color: var(--tb-card);
   --mat-card-elevated-container-shape: var(--tb-radius);
 }
+
+// Shared look for every dashboard widget card, so they all use the same sizes and spacing
+.widget {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+
+  mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem 0;
+  }
+
+  mat-card-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+
+  mat-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  p {
+    margin: 0 0 0.5rem;
+  }
+
+  // The most important number in a widget, e.g. the exchange rate or temperature
+  .key {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  // Small grey text under a key figure
+  .sub {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    color: var(--tb-muted);
+  }
+
+  .credit {
+    margin: auto 0 0;
+    padding-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--tb-muted);
+  }
+
+  .error {
+    color: var(--tb-error);
+  }
+
+  // Area for a chart or a data grid
+  .visual {
+    width: 100%;
+    height: 300px;
+  }
+
+  .grid {
+    width: 100%;
+    height: 100%;
+  }
+}

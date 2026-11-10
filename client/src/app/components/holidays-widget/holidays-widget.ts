@@ -1,4 +1,5 @@
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import type { Holiday } from '../../models/holiday';
@@ -19,7 +20,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 @Component({
   selector: 'app-holidays-widget',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
+  imports: [DatePipe, MatCard, MatCardContent, MatCardHeader, MatCardTitle, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './holidays-widget.html',
   styleUrl: './holidays-widget.scss',
@@ -44,6 +45,13 @@ export class HolidaysWidget {
   ];
 
   protected readonly showTable = signal(false);
+
+  // Number of holidays and the next one from today (dates look like "2026-01-01", so they sort as text)
+  protected readonly summary = computed(() => {
+    const list = this.holidays();
+    const today = new Date().toISOString().slice(0, 10);
+    return { count: list.length, next: list.find((h) => h.date >= today) ?? null };
+  });
 
   // How many holidays fall in each month: [Jan, Feb, ..., Dec]
   protected readonly monthCounts = computed(() => {

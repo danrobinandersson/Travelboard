@@ -1,7 +1,3 @@
-.error {
-  color: var(--tb-error);
-}
-
 .current {
   display: flex;
   align-items: center;
@@ -10,17 +6,6 @@
 
 .icon {
   font-size: 3rem;
-}
-
-.temp {
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: bold;
-}
-
-.meta {
-  margin: 0;
-  color: var(--tb-muted);
 }
 
 .days {
@@ -38,10 +23,5 @@
 }
 
 .day-rain {
-  color: var(--tb-muted);
-}
-
-.credit {
-  font-size: 0.8rem;
   color: var(--tb-muted);
 }

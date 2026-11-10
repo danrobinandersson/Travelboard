@@ -1,12 +1,15 @@
 <mat-card class="widget">
   <mat-card-header>
     <mat-card-title>{{ showAbout() ? 'About' : 'Facts about' }} {{ country().name }}</mat-card-title>
+    <mat-slide-toggle
+      labelPosition="before"
+      [checked]="showAbout()"
+      (change)="showAbout.set($event.checked)"
+    >
+      Wikipedia
+    </mat-slide-toggle>
   </mat-card-header>
   <mat-card-content>
-
-  <mat-slide-toggle [checked]="showAbout()" (change)="showAbout.set($event.checked)">
-    Show Wikipedia text
-  </mat-slide-toggle>
 
   @if (showAbout()) {
     <app-about-widget [countryName]="country().name" />

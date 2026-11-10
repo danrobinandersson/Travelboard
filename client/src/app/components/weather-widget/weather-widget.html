@@ -12,8 +12,8 @@
     <div class="current">
       <span class="icon">{{ currentInfo().icon }}</span>
       <div>
-        <p class="temp">{{ (weather.current.temperature | number: '1.0-0') ?? '–' }} °C</p>
-        <p class="meta">
+        <p class="key">{{ (weather.current.temperature | number: '1.0-0') ?? '–' }} °C</p>
+        <p class="sub">
           {{ currentInfo().text }} · Wind
           {{ (weather.current.windSpeed | number: '1.0-0') ?? '–' }} m/s
         </p>
