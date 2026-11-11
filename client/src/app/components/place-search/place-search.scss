@@ -1,24 +1,8 @@
-.search {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+:host {
+  display: block;
+  margin-bottom: 0.75rem;
 }
 
-.search mat-form-field {
-  flex: 1;
-}
-
-.error {
-  color: var(--tb-error);
-}
-
-.results {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
-}
-
-.results button {
+mat-form-field {
   width: 100%;
-  justify-content: flex-start;
 }

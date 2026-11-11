@@ -26,25 +26,8 @@
   <div class="widgets">
     <app-facts-widget class="w-5" [country]="c" />
 
-    <div class="weather-column w-7">
-      <app-place-search [countryCode]="c.code" (placeSelected)="selectedPlace.set($event)" />
+    <app-weather-widget class="w-7" [country]="c" />
 
-      @if (selectedPlace()) {
-        <button matButton="outlined" type="button" (click)="selectedPlace.set(null)">
-          Reset location
-        </button>
-      }
-
-      @if (weatherPoint(); as coords) {
-        <app-weather-widget
-          [heading]="weatherHeading()"
-          [latitude]="coords.lat"
-          [longitude]="coords.lng"
-        />
-      } @else {
-        <p>Weather isn't available for this country.</p>
-      }
-    </div>
     @if (currency(); as target) {
       <app-exchange-rate-widget class="w-5" [target]="target" />
     } @else {

@@ -1,23 +1,59 @@
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import type { Country } from '../../models/country';
+import type { Place } from '../../models/place';
 import type { WeatherResponse } from '../../models/weather';
 import { WeatherService } from '../../services/weather-service';
 import { describeSymbol } from '../../utils/weather-symbol';
+import { PlaceSearch } from '../place-search/place-search';
 
 @Component({
   selector: 'app-weather-widget',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, DatePipe, DecimalPipe],
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    MatButton,
+    MatIcon,
+    DatePipe,
+    DecimalPipe,
+    PlaceSearch,
+  ],
   templateUrl: './weather-widget.html',
   styleUrl: './weather-widget.scss',
 })
 export class WeatherWidget {
   private readonly weatherService = inject(WeatherService);
 
-  readonly latitude = input.required<number>();
-  readonly longitude = input.required<number>();
-  readonly heading = input('Weather');
+  readonly country = input.required<Country>();
+
+  // A city picked by the user. It goes back to null by itself whenever the country changes
+  protected readonly selectedPlace = linkedSignal<Country, Place | null>({
+    source: this.country,
+    computation: () => null,
+  });
+
+  // The point the weather is fetched for: the picked city, otherwise the country's default point
+  protected readonly point = computed(() => {
+    const place = this.selectedPlace();
+    if (place) return { lat: place.latitude, lng: place.longitude };
+    return this.country().coordinates;
+  });
+
+  protected readonly heading = computed(() => {
+    const place = this.selectedPlace();
+    if (place) return `Weather in ${place.name}`;
+
+    const c = this.country();
+    return c.coordinatesSource === 'capital' && c.capital
+      ? `Weather in ${c.capital}`
+      : `Weather near the centre of ${c.name}`;
+  });
 
   protected readonly data = signal<WeatherResponse | null>(null);
   protected readonly loading = signal(true);
@@ -38,13 +74,19 @@ export class WeatherWidget {
 
   constructor() {
     effect((onCleanup) => {
-      const latitude = this.latitude();
-      const longitude = this.longitude();
+      const point = this.point();
+
+      if (!point) {
+        this.data.set(null);
+        this.loading.set(false);
+        this.error.set("Weather isn't available for this country.");
+        return;
+      }
 
       this.loading.set(true);
       this.error.set(null);
 
-      const subscription = this.weatherService.getWeather(latitude, longitude).subscribe({
+      const subscription = this.weatherService.getWeather(point.lat, point.lng).subscribe({
         next: (response) => {
           this.data.set(response);
           this.loading.set(false);

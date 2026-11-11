@@ -11,8 +11,6 @@ import { FavouritesService } from '../../services/favourites-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
 import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
-import { PlaceSearch } from '../../components/place-search/place-search';
-import type { Place } from '../../models/place';
 
 @Component({
   selector: 'app-country-page',
@@ -23,7 +21,6 @@ import type { Place } from '../../models/place';
     WeatherWidget,
     FactsWidget,
     HolidaysWidget,
-    PlaceSearch,
   ],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
@@ -43,31 +40,10 @@ export class CountryPage {
   // Only the first currency is used for now
   protected readonly currency = computed(() => this.country()?.currencies[0]?.code ?? null);
 
-  // A place picked by the user. null means "use the country's default point"
-  protected readonly selectedPlace = signal<Place | null>(null);
-
-  // The point the weather widget shows
-  protected readonly weatherPoint = computed(() => {
-    const place = this.selectedPlace();
-    if (place) return { lat: place.latitude, lng: place.longitude };
-    return this.country()?.coordinates ?? null;
-  });
-
   // "Copenhagen · Europe", skipping whatever is missing
   protected readonly subtitle = computed(() => {
     const c = this.country();
     return [c?.capital, c?.region].filter(Boolean).join(' · ');
-  });
-
-  protected readonly weatherHeading = computed(() => {
-    const place = this.selectedPlace();
-    if (place) return `Weather in ${place.name}`;
-
-    const c = this.country();
-    if (!c) return 'Weather';
-    return c.coordinatesSource === 'capital' && c.capital
-      ? `Weather in ${c.capital}`
-      : `Weather near the centre of ${c.name}`;
   });
 
   protected toggleFavourite(code: string): void {
@@ -84,7 +60,6 @@ export class CountryPage {
     effect((onCleanup) => {
       const code = this.code();
 
-      this.selectedPlace.set(null);
       this.loading.set(true);
       this.error.set(null);
 

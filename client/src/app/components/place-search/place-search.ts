@@ -1,15 +1,21 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatButton } from '@angular/material/button';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import type { Place } from '../../models/place';
 import { PlacesService } from '../../services/places-service';
 
 @Component({
   selector: 'app-place-search',
-  imports: [MatButton, MatIcon, MatFormField, MatLabel, MatInput],
+  imports: [MatAutocomplete, MatAutocompleteTrigger, MatOption, MatFormField, MatLabel, MatInput],
   templateUrl: './place-search.html',
   styleUrl: './place-search.scss',
 })
@@ -17,16 +23,60 @@ export class PlaceSearch {
   private readonly placesService = inject(PlacesService);
 
   readonly countryCode = input.required<string>();
+  // The place the parent currently shows. null clears the text box (e.g. after "Reset location")
+  readonly selected = input<Place | null>(null);
   readonly placeSelected = output<Place>();
 
+  protected readonly query = signal('');
   protected readonly results = signal<Place[]>([]);
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly searched = signal(false);
 
+  // Every keystroke goes in here, and the pipe below turns it into at most one request
+  private readonly typed = new Subject<string>();
+
   constructor() {
-    // The router reuses this component when the country changes,
-    // so clear the old results (same reason as the effects in the widgets)
+    this.typed
+      .pipe(
+        debounceTime(400), // wait until the user stops typing
+        distinctUntilChanged(),
+        switchMap((text) => {
+          const query = text.trim();
+          if (query.length < 2) {
+            this.results.set([]);
+            this.searched.set(false);
+            this.loading.set(false);
+            return of(null);
+          }
+
+          this.loading.set(true);
+          this.error.set(null);
+          return this.placesService.search(this.countryCode(), query).pipe(
+            catchError((err: HttpErrorResponse) => {
+              this.error.set(
+                err.status === 0
+                  ? 'Could not reach the server.'
+                  : (err.error?.error ?? 'Something went wrong.'),
+              );
+              return of(null);
+            }),
+          );
+        }),
+        takeUntilDestroyed(),
+      )
+      .subscribe((places) => {
+        this.results.set(places ?? []);
+        this.searched.set(places !== null);
+        this.loading.set(false);
+      });
+
+    // Show the chosen place in the box, or empty it when nothing is chosen
+    effect(() => {
+      this.query.set(this.selected()?.name ?? '');
+    });
+
+    // The router reuses this component when the country changes, so drop the old results
     effect(() => {
       this.countryCode();
       this.results.set([]);
@@ -35,36 +85,21 @@ export class PlaceSearch {
     });
   }
 
-  protected search(text: string): void {
-    const query = text.trim();
-    if (query.length < 2) {
-      this.error.set('Type at least 2 letters.');
-      return;
-    }
-
-    this.loading.set(true);
-    this.error.set(null);
-
-    this.placesService.search(this.countryCode(), query).subscribe({
-      next: (places) => {
-        this.results.set(places);
-        this.searched.set(true);
-        this.loading.set(false);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.error.set(
-          err.status === 0
-            ? 'Could not reach the server.'
-            : (err.error?.error ?? 'Something went wrong.'),
-        );
-        this.loading.set(false);
-      },
-    });
+  protected onType(event: Event): void {
+    const text = (event.target as HTMLInputElement).value;
+    this.query.set(text);
+    this.typed.next(text);
   }
 
-  protected choose(place: Place): void {
-    this.placeSelected.emit(place);
-    this.results.set([]);
-    this.searched.set(false);
+  protected label(place: Place): string {
+    return place.region ? `${place.name}, ${place.region}` : place.name;
+  }
+
+  protected displayPlace(place: Place | null): string {
+    return place?.name ?? '';
+  }
+
+  protected onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.placeSelected.emit(event.option.value as Place);
   }
 }
