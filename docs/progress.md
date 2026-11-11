@@ -4,8 +4,8 @@ Update after every task. Check this before starting one.
 
 ## Current sprint
 
-Final stretch. Deadline moved to Nov 16 (changes allowed until Nov 19-20).
-Plan: styling, compare view, map and things to do, show/hide widgets, README.
+Final stretch. Hand-in Nov 16
+Left: deploy check, small hardening, error-handling and responsive check, README, result section. No changes after Nov 16.
 
 ## Live
 
@@ -30,6 +30,10 @@ Plan: styling, compare view, map and things to do, show/hide widgets, README.
 - Favourites: `favourites` table with RLS, save button on the country page, `/favourites` page (login required), link in the header
 - About text from Wikipedia (`GET /api/about`), shown in the facts widget via a toggle
 - Weather for cities: place search (`GET /api/places`, Open-Meteo geocoding, 24 h cache), pick a city and the weather widget follows, reset goes back to the capital
+- Styling: design tokens in `styles.scss`, Material cards and buttons, header with logo, account menu and search icon, home page hero
+- Compare view: Compare button, popover (bottom right) and a modal with facts, weather, exchange rate against SEK and a star on the best value in each row. Max 3 countries, the selection is saved in `localStorage`
+- Photos on the favourite cards: `GET /api/images` (photo of the capital from Wikipedia, 24 h cache)
+- Countries without an ISO code (e.g. Abkhazia) are filtered out of the country list
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
@@ -38,29 +42,29 @@ Plan: styling, compare view, map and things to do, show/hide widgets, README.
 
 ## Next
 
-- [ ] Verify on Render: weather and city search (Open-Meteo geocoding may be rate limited there)
-- [ ] Verify on Vercel after the next deploy: picker, chart/grid toggle and exchange widget work against the Render server, and refreshing `/country/SE` works (tests `vercel.json`)
-- [ ] Test capital/coordinates/population for edge cases (AQ, BO, ZA, PA)
-- [ ] Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, add a cache on the server
-- [ ] Styling: theme, cards, hero header, widgets of different sizes
-- [ ] Compare view for 2-3 countries (no login): temperature and exchange rate charts plus a grid
-- [ ] Map (Leaflet) and things to do (Wikipedia geosearch)
-- [ ] Show/hide widgets, then drag to reorder (if time)
+- [ ] Merge to `develop` and `main`, commit `client/public/` (logo, hero), then verify the live site: weather, city search, favourites, compare, photos, login and refreshing `/country/SE` (tests `vercel.json`)
+- [ ] Hardening: only accept Wikimedia image hosts and cap the cache in `imageService.ts`, restrict CORS to the Vercel domain
 - [ ] Test Register on the login page (hit Supabase's email rate limit, test user was added in the dashboard)
-- [ ] Tests, README
-- [ ] Add GitHub, Vercel and Render links to `examensarbete.md` (before Nov 16)
+- [ ] Error handling: stop the server or block a request and check every widget shows its error
+- [ ] Check the layout on a narrow window (header, widgets, compare modal, favourite cards)
+- [ ] README and the result section in `examensarbete.md`
+- [ ] Add GitHub, Vercel and Render links to `examensarbete.md`
 - [ ] Delete merged feature branches (optional)
 
-## Not tested yet
+## Future work (not done, mention in the result section)
 
-- World Bank API (comparison indicators)
-- Wikipedia geosearch (things to do)
+- AI chat (Claude API, SSE, tool use)
+- Map (Leaflet) and things to do (Wikipedia geosearch)
+- Show/hide and reorder widgets
+- Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, server cache
+- Compare: charts, more rows (e.g. holidays), World Bank indicators
+- Unit tests
+- Edge cases for capital/coordinates/population (AQ, BO, ZA, PA)
 
 ## Later
 
-- AI chat (Should): dropped for now, mention as future work
-- Nov 15: README, result section, deploy. Submit Nov 16
-- Presentation Nov 19-20
+- Nov 15: README, result section, final deploy. Submit Nov 16
+- Presentation Nov 19-20 (no code changes)
 
 ## Known limitations
 
@@ -69,12 +73,15 @@ Plan: styling, compare view, map and things to do, show/hide widgets, README.
 - Initial bundle is large (AG Grid, ECharts, Material), so the budget in `angular.json` was raised to warn 3 MB / error 4 MB. Possible fix later: lazy-load the dashboard route
 - CORS allows all origins (`cors()`), could be restricted to the Vercel domain
 - Weather daily rows are grouped by UTC date, so the first day is partial
+- Compare uses the capital's weather and a country's first currency. "Warmest" is not always "best"
+- A capital with an ambiguous name can get an unrelated photo, and a country without a capital gets none
 
 ## Decisions
 
 - 2026-11-07: After feedback, priority is styling, compare view, map and things to do. AI chat is dropped for now
 - 2026-11-07: City search uses Open-Meteo geocoding only. The weather itself still comes from MET Norway
-
+- 2026-11-11: In the compare view "best exchange rate" means SEK gained the most over the last 30 days. The raw rate is misleading (JPY would always win)
+- 2026-11-11: Photos come from the capital's Wikipedia page, because a country page's main image is its flag
 - 2026-10-26: The country page loads its data from the URL, so refresh and shared links work
 - 2026-10-14: AI chat is Should, not part of the MVP
 - 2026-10-14: Compare view does not require login
