@@ -6,8 +6,8 @@ Angular SPA (Vercel)
   |-- Supabase (auth + Postgres: favourites, trips)   direct, protected by RLS
   |
   `-- Node/Express API (Render or similar)
-        |-- /api/country, /weather, /rates, /holidays, /indicators  -> external APIs
-        `-- /api/chat (SSE streaming) -> Claude API (tool use)   [Should]
+        |-- /api/countries, /weather, /rates, /holidays, /about, /places, /images  -> external APIs
+        `-- /api/chat (SSE streaming) -> Claude API (tool use)   [dropped for now]
 ```
 
 ## Why this shape
@@ -20,21 +20,20 @@ Angular SPA (Vercel)
 ## External APIs
 | API | Used for | Key |
 |---|---|---|
-| REST Countries | facts, flags, currencies, languages | no |
-| Open-Meteo | forecast and historical climate | no |
-| Frankfurter | exchange rates and history | no |
+| REST Countries v5 | facts, flags, currencies, languages | yes (server only) |
+| MET Norway | weather forecast | no (needs a User-Agent) |
+| Open-Meteo geocoding | city search | no |
+| Frankfurter v2 | exchange rates and history | no |
 | Nager.Date | public holidays | no |
-| World Bank | indicators for comparison (population, GDP, tourism) | no |
-| OpenTripMap or Wikivoyage | sights (Should) | maybe |
-| Claude API | travel assistant (Should), server side only | yes |
+| Wikipedia | About text and capital photos | no (needs a User-Agent) |
+| Claude API | travel assistant, dropped for now | yes |
 
-Final choices are made in Sprint 1 after testing the APIs.
+World Bank and Wikipedia geosearch (things to do) were not used.
 
 ## Conventions
 See `CLAUDE.md`. Server normalises third-party data into our own types before
 it reaches the client.
 
-## Open decisions
-- Chart/grid library: a free alternative, not yet chosen
-- Server host: Render, Railway or Fly
-- Final list of APIs (decide in Sprint 1)
+## Decisions
+- Chart/grid/UI: ECharts, AG Grid and Angular Material
+- Hosting: client on Vercel, server on Render
