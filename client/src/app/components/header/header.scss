@@ -1,21 +1,85 @@
 .header {
-  background: #2e7d32;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
-
-nav {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 28rem) 1fr;
   align-items: center;
   gap: 1rem;
+  min-height: 5rem;
+  box-sizing: border-box;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, var(--tb-primary-dark), var(--tb-primary));
+  box-shadow: var(--tb-shadow);
+}
 
-  a {
-    color: white;
+.logo {
+  display: flex;
+  justify-self: start;
+
+  img {
+    display: block;
   }
 }
 
-.email {
-  font-size: 0.9rem;
+// The search sits in the middle column, on a white rounded box so it stands out on the teal
+.search {
+  grid-column: 2;
+  animation: open-search 0.18s ease-out;
+  padding: 0 0.5rem;
+  background: white;
+  border-radius: 999px;
+
+  // A lower input field than the default 56px
+  --mat-form-field-container-height: 44px;
+  --mat-form-field-container-vertical-padding: 10px;
+
+  // The pill is the visible edge, so hide Material's own outline
+  --mat-form-field-outlined-outline-color: transparent;
+  --mat-form-field-outlined-hover-outline-color: transparent;
+  --mat-form-field-outlined-focus-outline-color: transparent;
+
+  // Show focus on the pill instead
+  &:focus-within {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.6);
+  }
+}
+
+nav {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  // Material icon buttons read their colour from this variable
+  --mat-icon-button-icon-color: white;
+}
+
+.menu-email {
+  display: block;
+  padding: 0.5rem 1rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--tb-muted);
+  border-bottom: 1px solid var(--tb-border);
+}
+
+// On small screens the search gets its own row under the logo and menu
+@media (max-width: 45rem) {
+  .header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  nav {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@keyframes open-search {
+  from {
+    opacity: 0;
+    transform: scaleX(0.85);
+  }
 }

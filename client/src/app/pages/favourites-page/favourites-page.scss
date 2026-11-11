@@ -1,0 +1,27 @@
+.favourites-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.favourite-card {
+  height: 20rem;
+  width: 20rem;
+  border: 1px solid black;
+  border-radius: var(--tb-radius);
+  display: grid;
+  grid-auto-flow: column;
+  align-content: end;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.favourite-name {
+  margin: 0;
+}

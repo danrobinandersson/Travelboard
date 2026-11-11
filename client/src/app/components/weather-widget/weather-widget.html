@@ -1,5 +1,19 @@
-<section class="widget">
-  <h2>{{ heading() }}</h2>
+<mat-card class="widget">
+  <mat-card-header>
+    <mat-card-title>{{ heading() }}</mat-card-title>
+    @if (selectedPlace()) {
+      <button matButton="text" type="button" (click)="selectedPlace.set(null)">
+        <mat-icon>restart_alt</mat-icon>
+        Reset location
+      </button>
+    }
+  </mat-card-header>
+  <mat-card-content>
+    <app-place-search
+      [countryCode]="country().code"
+      [selected]="selectedPlace()"
+      (placeSelected)="selectedPlace.set($event)"
+    />
 
   @if (loading()) {
     <p>Loading...</p>
@@ -9,8 +23,8 @@
     <div class="current">
       <span class="icon">{{ currentInfo().icon }}</span>
       <div>
-        <p class="temp">{{ (weather.current.temperature | number: '1.0-0') ?? '–' }} °C</p>
-        <p class="meta">
+        <p class="key">{{ (weather.current.temperature | number: '1.0-0') ?? '–' }} °C</p>
+        <p class="sub">
           {{ currentInfo().text }} · Wind
           {{ (weather.current.windSpeed | number: '1.0-0') ?? '–' }} m/s
         </p>
@@ -36,4 +50,5 @@
     Weather data from
     <a href="https://api.met.no/" target="_blank" rel="noopener">MET Norway</a>
   </p>
-</section>
+</mat-card-content>
+</mat-card>

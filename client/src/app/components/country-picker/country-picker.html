@@ -3,10 +3,11 @@
 }
 
 <mat-form-field appearance="outline">
-  <mat-label>Country</mat-label>
   <input
     matInput
+    #field
     type="text"
+    aria-label="Country"
     [placeholder]="loading() ? 'Loading countries…' : 'Search for a country'"
     [disabled]="loading() || error() !== null"
     [value]="query()"

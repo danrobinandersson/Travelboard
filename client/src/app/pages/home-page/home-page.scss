@@ -1,0 +1,47 @@
+// The page fills the space between header and footer, and the hero fills the page
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.hero {
+  // Cancel the page padding so the picture reaches the edges
+  margin: -2rem;
+  flex: 1;
+  min-height: 28rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: white;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.55)),
+    url('/hero.jpg') center / cover no-repeat;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 40rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin: 0 0 1.75rem;
+  font-size: 1.15rem;
+  opacity: 0.95;
+}
+
+.search-box {
+  padding: 1.25rem 1.25rem 0.25rem;
+  background: white;
+  border-radius: var(--tb-radius);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  color: var(--tb-text);
+}

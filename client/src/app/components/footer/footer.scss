@@ -1,6 +1,10 @@
 .footer {
-  background: #2e7d32;
-  color: white;
   padding: 1rem;
   text-align: center;
+  color: var(--footer-color, var(--tb-muted));
+  font-size: 0.9rem;
+
+  p {
+    margin: 0;
+  }
 }

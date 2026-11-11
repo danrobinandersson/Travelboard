@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
@@ -7,8 +9,9 @@ import { FavouritesService } from '../../services/favourites-service';
 
 @Component({
   selector: 'app-favourites-page',
-  imports: [RouterLink],
+  imports: [RouterLink, MatIconButton, MatIcon],
   templateUrl: './favourites-page.html',
+  styleUrl: './favourites-page.scss',
 })
 export class FavouritesPage {
   private readonly countriesService = inject(CountriesService);

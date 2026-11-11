@@ -1,5 +1,17 @@
-<section class="widget">
-  <h2>Public holidays</h2>
+<mat-card class="widget">
+  <mat-card-header>
+    <mat-card-title>Public holidays</mat-card-title>
+    @if (summary().count > 0) {
+      <mat-slide-toggle
+        labelPosition="before"
+        [checked]="showTable()"
+        (change)="showTable.set($event.checked)"
+      >
+        Table
+      </mat-slide-toggle>
+    }
+  </mat-card-header>
+  <mat-card-content>
 
   @if (loading()) {
     <p>Loading...</p>
@@ -8,16 +20,22 @@
   } @else if (holidays().length === 0) {
     <p>No holiday data for this country.</p>
   } @else {
-    <mat-slide-toggle [checked]="showTable()" (change)="showTable.set($event.checked)">
-      Toggle view
-    </mat-slide-toggle>
+    <p class="key">{{ summary().count }} public holidays</p>
+    <p class="sub">
+      @if (summary().next; as next) {
+        Next: {{ next.name }}, {{ next.date | date: 'd MMM' }}
+      } @else {
+        No more holidays this year
+      }
+    </p>
 
     @if (showTable()) {
-      <div class="grid-container">
+      <div class="visual">
         <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
       </div>
     } @else {
-      <div echarts [options]="chartOptions()" class="chart"></div>
+      <div echarts [options]="chartOptions()" class="visual"></div>
     }
   }
-</section>
+</mat-card-content>
+</mat-card>

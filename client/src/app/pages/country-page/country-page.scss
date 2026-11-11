@@ -5,21 +5,57 @@
   align-items: stretch;
 }
 
+// On wide screens the grid has 12 columns and widgets pick how many to span
 @media (min-width: 60rem) {
   .widgets {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .w-5 {
+    grid-column: span 5;
+  }
+
+  .w-7 {
+    grid-column: span 7;
   }
 }
 .country-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--tb-card);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  box-shadow: var(--tb-shadow);
+}
+
+.flag {
+  // Same height for every flag so they line up, the width follows the flag's shape
+  height: 44px;
+  width: auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}
+
+.subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: var(--tb-muted);
 }
 
 .error {
-  color: #b00020;
-}
-
-.favourite {
-  cursor: pointer;
+  color: var(--tb-error);
 }

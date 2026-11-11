@@ -1,2 +1,9 @@
-<h2>Where do you want to go?</h2>
-<app-country-picker (countrySelected)="openCountry($event)" />
+<section class="hero">
+  <div class="hero-content">
+    <h1>Where do you want to go?</h1>
+    <p>Weather, exchange rates, holidays and more, for any country.</p>
+    <div class="search-box">
+      <app-country-picker (countrySelected)="openCountry($event)" />
+    </div>
+  </div>
+</section>

@@ -1,4 +1,15 @@
-import { Component, OnInit, computed, inject, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  afterRenderEffect,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
 import {
@@ -7,19 +18,23 @@ import {
   MatAutocompleteTrigger,
 } from '@angular/material/autocomplete';
 import { MatOption } from '@angular/material/core';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-country-picker',
-  imports: [MatAutocomplete, MatAutocompleteTrigger, MatOption, MatFormField, MatLabel, MatInput],
+  imports: [MatAutocomplete, MatAutocompleteTrigger, MatOption, MatFormField, MatInput],
   templateUrl: './country-picker.html',
   styleUrl: './country-picker.scss',
 })
 export class CountryPicker implements OnInit {
   private readonly countriesService = inject(CountriesService);
 
+  // true = put the cursor in the box as soon as it can be typed in (used by the header)
+  readonly autoFocus = input(false);
   readonly countrySelected = output<Country>();
+
+  private readonly field = viewChild<ElementRef<HTMLInputElement>>('field');
 
   protected readonly countries = signal<Country[]>([]);
   protected readonly query = signal('');
@@ -30,6 +45,15 @@ export class CountryPicker implements OnInit {
     const q = this.query().trim().toLowerCase();
     return this.countries().filter((c) => c.name.toLowerCase().includes(q));
   });
+
+  constructor() {
+    // The box is disabled while the countries load, so wait until that is done
+    afterRenderEffect(() => {
+      if (this.autoFocus() && !this.loading()) {
+        this.field()?.nativeElement.focus();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.countriesService.getCountries().subscribe({
