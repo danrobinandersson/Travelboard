@@ -87,7 +87,12 @@ async function fetchAllCountries(): Promise<Country[]> {
 
   while (more && offset < 1000) {
     const page = await fetchPage(offset);
-    countries.push(...page.objects.map(toCountry));
+    countries.push(
+      ...page.objects
+        .map(toCountry)
+        // Some partly recognised places (e.g. Abkhazia) have no country code, so they cannot be opened
+        .filter((country) => /^[A-Z]{2}$/.test(country.code)),
+    );
     more = page.meta.more;
     offset += PAGE_SIZE;
   }
