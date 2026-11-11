@@ -21,6 +21,20 @@
         {{ favourites.isFavourite(c.code) ? 'Saved' : 'Save' }}
       </button>
     }
+    <span
+      matTooltip="Maximum of 3 countries reached"
+      [matTooltipDisabled]="compare.has(c.code) || !compare.isFull()"
+    >
+      <button
+        [matButton]="compare.has(c.code) ? 'filled' : 'outlined'"
+        type="button"
+        [disabled]="!compare.has(c.code) && compare.isFull()"
+        (click)="compare.toggle(c.code)"
+      >
+        <mat-icon>{{ compare.has(c.code) ? 'playlist_add_check' : 'compare_arrows' }}</mat-icon>
+        Compare
+      </button>
+    </span>
   </header>
 
   <div class="widgets">
