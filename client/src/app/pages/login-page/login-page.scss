@@ -1,4 +1,13 @@
+// The page fills the space between header and footer, and the card sits in the middle of it
+:host {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login {
+  width: 100%;
   max-width: 24rem;
   padding: 1.5rem;
   background: var(--tb-card);
