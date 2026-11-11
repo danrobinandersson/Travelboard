@@ -18,13 +18,14 @@ save favourites. The app is deployed and works on desktop.
 - Basic error handling (every widget has loading and error states)
 
 ## Should
-- AI travel assistant chat about the selected country (Claude API, SSE, tool use)
+- AI travel assistant chat about the selected country (Claude API, SSE, tool use). Dropped for now, future work
 - Things to do / sights list with a map
 - Basic trip planner: dates, saved destinations, notes, checklist
 - Responsive design
 
 ## Could
 - Currency converter widget
+- Weather for a chosen city (done), show/hide and reorder widgets
 - Dark mode, Swedish/English
 - Export trip plan as PDF
 - Unit tests for core services

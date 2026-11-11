@@ -12,7 +12,7 @@ scope small and prefer simple solutions.
 - `server/`: Node + Express (TypeScript, ES modules). Proxies and caches
   external APIs, hosts the AI chat endpoint, keeps API keys secret
 - Supabase: auth + Postgres (favourites, trips), protected by Row Level Security
-- Chart/grid library: TBD, a free one (not DevExtreme)
+- Charts: ECharts. Data grid: AG Grid. UI: Angular Material
 - Hosting: client on Vercel, server on Render or similar, DB/auth on Supabase
 
 ## Commands

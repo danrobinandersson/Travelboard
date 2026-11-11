@@ -1,32 +1,26 @@
+// The page fills the space between header and footer, and the card sits in the middle of it
+:host {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login {
-  max-width: 22rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  width: 100%;
+  max-width: 24rem;
+  padding: 1.5rem;
+  background: var(--tb-card);
+  border-radius: var(--tb-radius);
+  box-shadow: var(--tb-shadow);
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-label {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
 .error {
-  color: #b00020;
-}
-
-.link {
-  margin-top: 0.75rem;
-  background: none;
-  border: none;
-  color: #2e7d32;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
+  color: var(--tb-error);
 }

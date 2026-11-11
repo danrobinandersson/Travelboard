@@ -7,13 +7,45 @@
 } @else if (favouriteCountries().length === 0) {
   <p>You have no favourites yet. Open a country and click Save.</p>
 } @else {
-  <ul>
+  <div class="favourites-wrapper">
     @for (country of favouriteCountries(); track country.code) {
-      <li>
-        <img [src]="country.flag" alt="" width="24" />
-        <a [routerLink]="['/country', country.code]">{{ country.name }}</a>
-        <button type="button" (click)="favourites.remove(country.code)">Remove</button>
-      </li>
+      <a [routerLink]="['/country', country.code]">
+        <div class="favourite-card" [style.background-image]="backgroundFor(country.code)">
+          <h3 class="favourite-name">{{ country.name }}</h3>
+          <span
+            matTooltip="Maximum of 3 countries reached"
+            [matTooltipDisabled]="compare.has(country.code) || !compare.isFull()"
+          >
+            <button
+              matIconButton
+              type="button"
+              [attr.aria-label]="
+                compare.has(country.code)
+                  ? 'Remove ' + country.name + ' from comparison'
+                  : 'Add ' + country.name + ' to comparison'
+              "
+              [disabled]="!compare.has(country.code) && compare.isFull()"
+              (click)="toggleCompare($event, country.code)"
+            >
+              <mat-icon>{{
+                compare.has(country.code) ? 'playlist_add_check' : 'compare_arrows'
+              }}</mat-icon>
+            </button>
+          </span>
+          <button
+            matIconButton
+            type="button"
+            [attr.aria-label]="'Remove ' + country.name + ' from favourites'"
+            (click)="
+              $event.preventDefault(); $event.stopPropagation(); favourites.remove(country.code)
+            "
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </a>
     }
-  </ul>
+  </div>
+
+  <p class="credit">Photos from Wikipedia and Wikimedia Commons</p>
 }

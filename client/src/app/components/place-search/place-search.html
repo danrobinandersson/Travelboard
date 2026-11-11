@@ -1,29 +1,21 @@
-<div class="search">
-  <input
-    #box
-    type="search"
-    placeholder="Search a city in this country"
-    (keyup.enter)="search(box.value)"
-  />
-  <button type="button" (click)="search(box.value)">Search</button>
-</div>
-
-@if (loading()) {
-  <p>Searching...</p>
-} @else if (error()) {
-  <p class="error">{{ error() }}</p>
-} @else if (searched()) {
-  @if (results().length === 0) {
-    <p>No places found.</p>
-  } @else {
-    <ul class="results">
+<mat-form-field appearance="outline" subscriptSizing="dynamic">
+  <mat-label>Search a city in this country</mat-label>
+  <input matInput type="text" [value]="query()" (input)="onType($event)" [matAutocomplete]="auto" />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayPlace"
+    (optionSelected)="onOptionSelected($event)"
+  >
+    @if (loading()) {
+      <mat-option disabled>Searching…</mat-option>
+    } @else if (error()) {
+      <mat-option disabled>{{ error() }}</mat-option>
+    } @else if (searched() && results().length === 0) {
+      <mat-option disabled>No places found</mat-option>
+    } @else {
       @for (place of results(); track place.id) {
-        <li>
-          <button type="button" (click)="choose(place)">
-            {{ place.region ? place.name + ', ' + place.region : place.name }}
-          </button>
-        </li>
+        <mat-option [value]="place">{{ label(place) }}</mat-option>
       }
-    </ul>
-  }
-}
+    }
+  </mat-autocomplete>
+</mat-form-field>

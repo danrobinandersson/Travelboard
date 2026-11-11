@@ -1,45 +1,52 @@
-<a routerLink="/">Back to search</a>
-
 @if (loading()) {
   <p>Loading...</p>
 } @else if (error()) {
   <p class="error">{{ error() }}</p>
 } @else if (country(); as c) {
   <header class="country-header">
-    <img class="flag" [src]="c.flag" alt="" width="48" />
-    <h2>{{ c.name }}</h2>
+    <img class="flag" [src]="c.flag" alt="" />
+    <div class="title">
+      <h2>{{ c.name }}</h2>
+      @if (subtitle(); as text) {
+        <p class="subtitle">{{ text }}</p>
+      }
+    </div>
     @if (auth.user()) {
-      <button type="button" class="favourite" (click)="toggleFavourite(c.code)">
-        {{ favourites.isFavourite(c.code) ? '♥ Saved' : '♡ Save' }}
+      <button
+        [matButton]="favourites.isFavourite(c.code) ? 'filled' : 'outlined'"
+        type="button"
+        (click)="toggleFavourite(c.code)"
+      >
+        <mat-icon>{{ favourites.isFavourite(c.code) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        {{ favourites.isFavourite(c.code) ? 'Saved' : 'Save' }}
       </button>
     }
+    <span
+      matTooltip="Maximum of 3 countries reached"
+      [matTooltipDisabled]="compare.has(c.code) || !compare.isFull()"
+    >
+      <button
+        [matButton]="compare.has(c.code) ? 'filled' : 'outlined'"
+        type="button"
+        [disabled]="!compare.has(c.code) && compare.isFull()"
+        (click)="compare.toggle(c.code)"
+      >
+        <mat-icon>{{ compare.has(c.code) ? 'playlist_add_check' : 'compare_arrows' }}</mat-icon>
+        Compare
+      </button>
+    </span>
   </header>
 
   <div class="widgets">
-    <app-facts-widget [country]="c" />
+    <app-facts-widget class="w-5" [country]="c" />
+
+    <app-weather-widget class="w-7" [country]="c" />
 
     @if (currency(); as target) {
-      <app-exchange-rate-widget [target]="target" />
+      <app-exchange-rate-widget class="w-5" [target]="target" />
     } @else {
-      <p>Exchange rates aren't available for this country.</p>
+      <p class="w-5">Exchange rates aren't available for this country.</p>
     }
-    <div class="weather-column">
-      <app-place-search [countryCode]="c.code" (placeSelected)="selectedPlace.set($event)" />
-
-      @if (selectedPlace()) {
-        <button type="button" (click)="selectedPlace.set(null)">Reset location</button>
-      }
-
-      @if (weatherPoint(); as coords) {
-        <app-weather-widget
-          [heading]="weatherHeading()"
-          [latitude]="coords.lat"
-          [longitude]="coords.lng"
-        />
-      } @else {
-        <p>Weather isn't available for this country.</p>
-      }
-    </div>
-    <app-holidays-widget [countryCode]="c.code" />
+    <app-holidays-widget class="w-7" [countryCode]="c.code" />
   </div>
 }

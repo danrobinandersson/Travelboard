@@ -1,27 +1,36 @@
-<section class="widget">
-  <h2>Exchange rate</h2>
+<mat-card class="widget">
+  <mat-card-header>
+    <mat-card-title>Exchange rate</mat-card-title>
+    @if (data()) {
+      <mat-slide-toggle
+        labelPosition="before"
+        [checked]="showTable()"
+        (change)="showTable.set($event.checked)"
+      >
+        Table
+      </mat-slide-toggle>
+    }
+  </mat-card-header>
+  <mat-card-content>
 
   @if (loading()) {
     <p>Loading...</p>
   } @else if (error()) {
     <p class="error">{{ error() }}</p>
   } @else if (data(); as rates) {
-    <p class="latest">
+    <p class="key">
       1 {{ rates.base }} = <strong>{{ rates.latest.rate | number: '1.4-4' }}</strong>
       {{ rates.target }}
     </p>
-    <p class="date">As of {{ rates.latest.date }}</p>
-
-    <mat-slide-toggle [checked]="showTable()" (change)="showTable.set($event.checked)">
-      Toggle view
-    </mat-slide-toggle>
+    <p class="sub">As of {{ rates.latest.date }}</p>
 
     @if (showTable()) {
-      <div class="grid-container">
+      <div class="visual">
         <ag-grid-angular class="grid" [rowData]="rates.history" [columnDefs]="columnDefs" />
       </div>
     } @else {
-      <div echarts [options]="chartOptions()" class="chart"></div>
+      <div echarts [options]="chartOptions()" class="visual"></div>
     }
   }
-</section>
+</mat-card-content>
+</mat-card>

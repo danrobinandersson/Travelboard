@@ -1,0 +1,179 @@
+<h2 mat-dialog-title>Countries Comparison</h2>
+<p class="note">
+  ★ marks the best value in a row. Weather: the warmest, the most sunny days and the least rain over
+  the next 7 days in the capital. Exchange rate: the country where the Swedish krona has gained the
+  most against its currency in the last 30 days.
+</p>
+<mat-dialog-content>
+  @if (loading()) {
+    <p>Loading...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          @for (c of countries(); track c.code) {
+            <th>
+              <img class="flag" [src]="c.flag" alt="" />
+              <div>{{ c.name }}</div>
+              <button type="button" class="remove" (click)="remove(c.code)">Remove</button>
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Weather now</th>
+          @for (c of countries(); track c.code; let i = $index) {
+            <td>
+              @if (weatherLoading()) {
+                …
+              } @else if (stats()[i]; as s) {
+                {{ s.icon }} {{ (s.temperature | number: '1.0-0') ?? '–' }} °C, {{ s.text }}
+              } @else {
+                Not available
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Next 7 days: average high</th>
+          @for (c of countries(); track c.code; let i = $index) {
+            <td [class.best]="best().warmest.includes(i)">
+              @if (weatherLoading()) {
+                …
+              } @else if (stats()[i]; as s) {
+                {{ (s.avgHigh | number: '1.0-1') ?? '–' }} °C
+                @if (best().warmest.includes(i)) {
+                  <span class="star" title="Best of the compared countries">★</span>
+                }
+              } @else {
+                Not available
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Next 7 days: sunny days</th>
+          @for (c of countries(); track c.code; let i = $index) {
+            <td [class.best]="best().sunniest.includes(i)">
+              @if (weatherLoading()) {
+                …
+              } @else if (stats()[i]; as s) {
+                {{ s.sunnyDays }}
+                @if (best().sunniest.includes(i)) {
+                  <span class="star" title="Best of the compared countries">★</span>
+                }
+              } @else {
+                Not available
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Next 7 days: rain</th>
+          @for (c of countries(); track c.code; let i = $index) {
+            <td [class.best]="best().driest.includes(i)">
+              @if (weatherLoading()) {
+                …
+              } @else if (stats()[i]; as s) {
+                {{ s.rain | number: '1.0-1' }} mm
+                @if (best().driest.includes(i)) {
+                  <span class="star" title="Best of the compared countries">★</span>
+                }
+              } @else {
+                Not available
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Exchange rate (1 SEK)</th>
+          @for (c of countries(); track c.code; let i = $index) {
+            <td [class.best]="best().rate.includes(i)">
+              @if (ratesLoading()) {
+                …
+              } @else if (rateCells()[i]; as r) {
+                @if (r.kind === 'home') {
+                  Home currency
+                } @else {
+                  {{ r.rate | number: '1.2-4' }} {{ r.code }}
+                  @if (best().rate.includes(i)) {
+                    <span class="star" title="Best of the compared countries">★</span>
+                  }
+                  <div class="sub">
+                    {{ r.change > 0 ? '+' : '' }}{{ r.change | number: '1.1-1' }}% in 30 days
+                  </div>
+                }
+              } @else {
+                Not available
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Capital</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ c.capital ?? 'None' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Region</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ c.region ?? 'Unknown' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Population</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ (c.population | number) ?? 'Unknown' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Languages</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ c.languages.join(', ') || 'Unknown' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Currency</th>
+          @for (c of countries(); track c.code) {
+            <td>
+              @for (currency of c.currencies; track currency.code) {
+                <div>{{ currency.name }} ({{ currency.code }})</div>
+              } @empty {
+                None
+              }
+            </td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Time zone</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ c.timezones.join(', ') || 'Unknown' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Drives on the</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ c.drivingSide ?? 'Unknown' }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">EU member</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ yesNo(c.inEu) }}</td>
+          }
+        </tr>
+        <tr>
+          <th scope="row">Schengen</th>
+          @for (c of countries(); track c.code) {
+            <td>{{ yesNo(c.inSchengen) }}</td>
+          }
+        </tr>
+      </tbody>
+    </table>
+  }
+</mat-dialog-content>
