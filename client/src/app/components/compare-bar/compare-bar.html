@@ -1,0 +1,9 @@
+@if (compare.codes().length > 0) {
+  <div class="compare-bar">
+    <button type="button" class="open" (click)="openDialog()">
+      <mat-icon class="icon">compare_arrows</mat-icon>
+      <span>Compare countries ({{ compare.codes().length }})</span>
+    </button>
+    <button type="button" class="clear" (click)="compare.clear()">Remove all selected</button>
+  </div>
+}

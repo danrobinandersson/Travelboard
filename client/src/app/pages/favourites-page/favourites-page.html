@@ -12,6 +12,26 @@
       <a [routerLink]="['/country', country.code]">
         <div class="favourite-card">
           <h3 class="favourite-name">{{ country.name }}</h3>
+          <span
+            matTooltip="Maximum of 3 countries reached"
+            [matTooltipDisabled]="compare.has(country.code) || !compare.isFull()"
+          >
+            <button
+              matIconButton
+              type="button"
+              [attr.aria-label]="
+                compare.has(country.code)
+                  ? 'Remove ' + country.name + ' from comparison'
+                  : 'Add ' + country.name + ' to comparison'
+              "
+              [disabled]="!compare.has(country.code) && compare.isFull()"
+              (click)="toggleCompare($event, country.code)"
+            >
+              <mat-icon>{{
+                compare.has(country.code) ? 'playlist_add_check' : 'compare_arrows'
+              }}</mat-icon>
+            </button>
+          </span>
           <button
             matIconButton
             type="button"

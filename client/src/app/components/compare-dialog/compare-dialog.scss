@@ -1,0 +1,82 @@
+mat-dialog-content {
+  min-height: 16rem;
+}
+
+.error {
+  color: var(--tb-error);
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.6rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+tbody th {
+  font-weight: 500;
+  color: var(--tb-muted);
+}
+
+thead th {
+  vertical-align: bottom;
+}
+
+// The label column is narrower than the country columns (the table layout is fixed)
+thead th:first-child {
+  width: 10rem;
+}
+
+.flag {
+  display: block;
+  height: 32px;
+  width: auto;
+  margin-bottom: 0.4rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+// The winner of a weather row
+.best {
+  background: rgba(15, 118, 110, 0.1);
+  font-weight: 500;
+}
+
+.star {
+  color: var(--tb-accent);
+}
+
+.sub {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--tb-muted);
+}
+
+.note {
+  margin: 0 1.5rem 0.5rem;
+  font-size: 0.85rem;
+  color: var(--tb-muted);
+}
+
+.remove {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--tb-muted);
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--tb-error);
+  }
+}

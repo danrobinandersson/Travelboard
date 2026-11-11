@@ -2,11 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
 import { Country } from '../../models/country';
 import { CountriesService } from '../../services/countries-service';
 import { AuthService } from '../../services/auth-service';
+import { CompareService } from '../../services/compare-service';
 import { FavouritesService } from '../../services/favourites-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
@@ -17,6 +19,7 @@ import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget
   imports: [
     MatButton,
     MatIcon,
+    MatTooltip,
     ExchangeRateWidget,
     WeatherWidget,
     FactsWidget,
@@ -29,6 +32,7 @@ export class CountryPage {
   private readonly countriesService = inject(CountriesService);
   protected readonly auth = inject(AuthService);
   protected readonly favourites = inject(FavouritesService);
+  protected readonly compare = inject(CompareService);
 
   // Filled in by the router from the ":code" part of /country/:code
   readonly code = input.required<string>();
