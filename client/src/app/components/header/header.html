@@ -1,9 +1,32 @@
 <header class="header">
   <a routerLink="/" class="logo" aria-label="Travelboard home">
-    <img src="travelboard-logo-light.svg" alt="Travelboard" height="36" />
+    <img src="travelboard-logo-light.svg" alt="Travelboard" height="40" />
   </a>
 
+  @if (showSearch() && searchOpen()) {
+    <div
+      #search
+      class="search"
+      (focusout)="onSearchFocusOut(search)"
+      (keydown.escape)="searchOpen.set(false)"
+    >
+      <app-country-picker [autoFocus]="true" (countrySelected)="openCountry($event)" />
+    </div>
+  }
+
   <nav>
+    @if (showSearch() && !searchOpen()) {
+      <button
+        matIconButton
+        type="button"
+        matTooltip="Search country"
+        aria-label="Search country"
+        (click)="searchOpen.set(true)"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    }
+
     @if (auth.user(); as user) {
       <button
         matIconButton
