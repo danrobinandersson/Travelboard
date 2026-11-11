@@ -10,7 +10,7 @@
   <div class="favourites-wrapper">
     @for (country of favouriteCountries(); track country.code) {
       <a [routerLink]="['/country', country.code]">
-        <div class="favourite-card">
+        <div class="favourite-card" [style.background-image]="backgroundFor(country.code)">
           <h3 class="favourite-name">{{ country.name }}</h3>
           <span
             matTooltip="Maximum of 3 countries reached"
@@ -46,4 +46,6 @@
       </a>
     }
   </div>
+
+  <p class="credit">Photos from Wikipedia and Wikimedia Commons</p>
 }
