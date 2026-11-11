@@ -11,6 +11,7 @@ import { FavouritesService } from '../../services/favourites-service';
   selector: 'app-favourites-page',
   imports: [RouterLink, MatIconButton, MatIcon],
   templateUrl: './favourites-page.html',
+  styleUrl: './favourites-page.scss',
 })
 export class FavouritesPage {
   private readonly countriesService = inject(CountriesService);
