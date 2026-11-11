@@ -10,7 +10,6 @@
 .favourite-card {
   height: 20rem;
   width: 20rem;
-  border: 1px solid black;
   border-radius: var(--tb-radius);
   display: grid;
   grid-auto-flow: column;
@@ -20,8 +19,21 @@
   gap: 0.25rem;
   padding-bottom: 0.5rem;
   box-sizing: border-box;
+  background: linear-gradient(135deg, var(--tb-primary-dark), var(--tb-primary));
+  background-size: cover;
+  background-position: center;
+  color: white;
+  overflow: hidden;
+  --mat-icon-button-icon-color: white;
 }
 
 .favourite-name {
   margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.credit {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--tb-muted);
 }
