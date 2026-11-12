@@ -8,6 +8,10 @@ const CACHE_TTL = 24 * 60 * 60 * 1000; // one day, in milliseconds
 // Wikimedia only serves certain thumbnail widths. 500 is about 70 KB and 960 about 240 KB.
 const DEFAULT_WIDTH = 500;
 const ALLOWED_WIDTHS = [500, 960];
+// Photos must come from Wikimedia's own image servers
+const ALLOWED_IMAGE_HOSTS = ["upload.wikimedia.org", "thumb.wikimedia.org"];
+// The cache never holds more than this many lookups
+const MAX_CACHE_ENTRIES = 500;
 
 export class ImagesError extends Error {
   status: number;
@@ -43,6 +47,15 @@ function toLargerThumbnail(source: string, width: number): string {
   return withoutQuery.replace(/\/\d+px-/, `/${width}px-`);
 }
 
+function isWikimediaImage(source: string): boolean {
+  try {
+    const url = new URL(source);
+    return url.protocol === "https:" && ALLOWED_IMAGE_HOSTS.includes(url.hostname);
+  } catch {
+    return false; // not a valid address at all
+  }
+}
+
 // Flags and other SVG drawings make poor backgrounds
 function isPhoto(source: string): boolean {
   return !/\.svg|flag_of/i.test(source);
@@ -75,13 +88,24 @@ export async function getCountryImage(
   for (const title of titles) {
     const summary = await fetchSummary(title);
     const source = summary?.thumbnail?.source;
-    if (summary?.type === "standard" && source && isPhoto(source)) {
+    if (
+      summary?.type === "standard" &&
+      source &&
+      isWikimediaImage(source) &&
+      isPhoto(source)
+    ) {
       imageUrl = toLargerThumbnail(source, width);
       break;
     }
   }
 
   const data: CountryImage = { imageUrl };
+  // A Map remembers insertion order, so the first key is the oldest one
+  cache.delete(key);
+  if (cache.size >= MAX_CACHE_ENTRIES) {
+    const oldest = cache.keys().next().value;
+    if (oldest !== undefined) cache.delete(oldest);
+  }
   cache.set(key, { data, expires: Date.now() + CACHE_TTL });
   return data;
 }
