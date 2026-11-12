@@ -31,6 +31,36 @@
   box-shadow: var(--tb-shadow);
 }
 
+// With a photo the header is taller, the text is white and the content sits at the bottom
+.country-header.has-photo {
+  position: relative;
+  min-height: 12rem;
+  align-items: flex-end;
+  border: none;
+  background-color: var(--tb-primary-dark);
+  background-size: cover;
+  background-position: center;
+  color: white;
+
+  .subtitle {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  // The outlined buttons are teal by default, which is hard to see on a photo
+  --mat-button-outlined-label-text-color: white;
+  --mat-button-outlined-outline-color: rgba(255, 255, 255, 0.7);
+  --mat-button-outlined-disabled-label-text-color: rgba(255, 255, 255, 0.5);
+  --mat-button-outlined-disabled-outline-color: rgba(255, 255, 255, 0.3);
+}
+
+.credit {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .flag {
   // Same height for every flag so they line up, the width follows the flag's shape
   height: 44px;

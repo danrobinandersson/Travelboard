@@ -5,8 +5,9 @@ const BASE_URL = "https://en.wikipedia.org/api/rest_v1/page/summary";
 const USER_AGENT =
   "Travelboard/1.0 https://github.com/danrobinandersson/Travelboard";
 const CACHE_TTL = 24 * 60 * 60 * 1000; // one day, in milliseconds
-// Wikimedia only serves certain thumbnail widths. 500 works and is about 70 KB.
-const IMAGE_WIDTH = 500;
+// Wikimedia only serves certain thumbnail widths. 500 is about 70 KB and 960 about 240 KB.
+const DEFAULT_WIDTH = 500;
+const ALLOWED_WIDTHS = [500, 960];
 
 export class ImagesError extends Error {
   status: number;
@@ -37,9 +38,9 @@ async function fetchSummary(
 }
 
 // The summary gives a 330 px thumbnail. Ask for a bigger one of the same photo.
-function toLargerThumbnail(source: string): string {
+function toLargerThumbnail(source: string, width: number): string {
   const withoutQuery = source.split("?")[0] ?? source;
-  return withoutQuery.replace(/\/\d+px-/, `/${IMAGE_WIDTH}px-`);
+  return withoutQuery.replace(/\/\d+px-/, `/${width}px-`);
 }
 
 // Flags and other SVG drawings make poor backgrounds
@@ -51,6 +52,7 @@ function isPhoto(source: string): boolean {
 export async function getCountryImage(
   capital: string,
   country: string,
+  width: number = DEFAULT_WIDTH,
 ): Promise<CountryImage> {
   const city = capital.trim();
   const name = country.trim();
@@ -58,7 +60,11 @@ export async function getCountryImage(
     throw new ImagesError("Invalid capital or country", 400);
   }
 
-  const key = `${city}|${name}`.toLowerCase();
+  if (!ALLOWED_WIDTHS.includes(width)) {
+    throw new ImagesError(`Width must be one of: ${ALLOWED_WIDTHS.join(", ")}`, 400);
+  }
+
+  const key = `${city}|${name}|${width}`.toLowerCase();
   const hit = cache.get(key);
   if (hit && hit.expires > Date.now()) return hit.data;
 
@@ -70,7 +76,7 @@ export async function getCountryImage(
     const summary = await fetchSummary(title);
     const source = summary?.thumbnail?.source;
     if (summary?.type === "standard" && source && isPhoto(source)) {
-      imageUrl = toLargerThumbnail(source);
+      imageUrl = toLargerThumbnail(source, width);
       break;
     }
   }

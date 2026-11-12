@@ -3,7 +3,11 @@
 } @else if (error()) {
   <p class="error">{{ error() }}</p>
 } @else if (country(); as c) {
-  <header class="country-header">
+  <header
+    class="country-header"
+    [class.has-photo]="photoUrl()"
+    [style.background-image]="headerBackground()"
+  >
     <img class="flag" [src]="c.flag" alt="" />
     <div class="title">
       <h2>{{ c.name }}</h2>
@@ -35,6 +39,9 @@
         Compare
       </button>
     </span>
+    @if (photoUrl()) {
+      <span class="credit">Photo from Wikipedia</span>
+    }
   </header>
 
   <div class="widgets">

@@ -8,9 +8,10 @@ import type { CountryImage } from '../models/country-image';
 export class ImagesService {
   private http = inject(HttpClient);
 
-  // A photo of the capital, taken from Wikipedia
-  getCountryImage(capital: string, country: string): Observable<CountryImage> {
-    const params = new HttpParams().set('capital', capital).set('country', country);
+  // A photo of the capital, taken from Wikipedia. The server allows widths 500 (default) and 960.
+  getCountryImage(capital: string, country: string, width?: number): Observable<CountryImage> {
+    let params = new HttpParams().set('capital', capital).set('country', country);
+    if (width !== undefined) params = params.set('width', width);
     return this.http.get<CountryImage>(`${API_URL}/images`, { params });
   }
 }
