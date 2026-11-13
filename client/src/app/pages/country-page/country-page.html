@@ -4,6 +4,12 @@
   <p class="error">{{ error() }}</p>
 } @else if (country(); as c) {
   <header class="country-header">
+    @if (photoUrl(); as photo) {
+      <figure class="photo">
+        <img [src]="photo" alt="" />
+        <figcaption>Photo from Wikipedia</figcaption>
+      </figure>
+    }
     <img class="flag" [src]="c.flag" alt="" />
     <div class="title">
       <h2>{{ c.name }}</h2>
