@@ -3,9 +3,9 @@ import { ImagesError, getCountryImage } from "../services/imageService.js";
 
 export const imagesRouter = Router();
 
-// GET /api/images?capital=Stockholm&country=Sweden  (country is optional)
+// GET /api/images?capital=Stockholm&country=Sweden&width=960  (country and width are optional)
 imagesRouter.get("/", async (req, res) => {
-  const { capital, country } = req.query;
+  const { capital, country, width } = req.query;
 
   if (typeof capital !== "string" || capital.trim() === "") {
     res.status(400).json({ error: 'Query parameter "capital" is required' });
@@ -14,7 +14,11 @@ imagesRouter.get("/", async (req, res) => {
 
   try {
     res.json(
-      await getCountryImage(capital, typeof country === "string" ? country : ""),
+      await getCountryImage(
+        capital,
+        typeof country === "string" ? country : "",
+        typeof width === "string" ? Number(width) : undefined,
+      ),
     );
   } catch (error) {
     if (error instanceof ImagesError) {
