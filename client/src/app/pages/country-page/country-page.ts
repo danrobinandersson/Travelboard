@@ -43,13 +43,8 @@ export class CountryPage {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
 
-  // A photo of the capital for the header. null = no photo (yet), the header stays plain.
+  // A photo of the capital for the header. null = no photo (yet), the header has none.
   protected readonly photoUrl = signal<string | null>(null);
-
-  protected readonly headerBackground = computed(() => {
-    const url = this.photoUrl();
-    return url ? `linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url("${url}")` : null;
-  });
 
   // Only the first currency is used for now
   protected readonly currency = computed(() => this.country()?.currencies[0]?.code ?? null);
@@ -75,12 +70,11 @@ export class CountryPage {
       this.photoUrl.set(null);
       if (!country?.capital) return;
 
-      // 960 px, because the header is wide
       const subscription = this.imagesService
-        .getCountryImage(country.capital, country.name, 960)
+        .getCountryImage(country.capital, country.name)
         .subscribe({
           next: ({ imageUrl }) => this.photoUrl.set(imageUrl),
-          // No photo is not a problem: the header just stays plain
+          // No photo is not a problem: the header just has none
           error: () => undefined,
         });
 

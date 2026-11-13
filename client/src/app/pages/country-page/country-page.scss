@@ -31,34 +31,33 @@
   box-shadow: var(--tb-shadow);
 }
 
-// With a photo the header is taller, the text is white and the content sits at the bottom
-.country-header.has-photo {
-  position: relative;
-  min-height: 12rem;
-  align-items: flex-end;
-  border: none;
-  background-color: var(--tb-primary-dark);
-  background-size: cover;
-  background-position: center;
-  color: white;
+// A photo of the capital at the left end of the header
+.photo {
+  flex: none;
+  margin: 0;
+  text-align: center;
 
-  .subtitle {
-    color: rgba(255, 255, 255, 0.85);
+  img {
+    display: block;
+    width: 15rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
-  // The outlined buttons are teal by default, which is hard to see on a photo
-  --mat-button-outlined-label-text-color: white;
-  --mat-button-outlined-outline-color: rgba(255, 255, 255, 0.7);
-  --mat-button-outlined-disabled-label-text-color: rgba(255, 255, 255, 0.5);
-  --mat-button-outlined-disabled-outline-color: rgba(255, 255, 255, 0.3);
+  figcaption {
+    margin-top: 0.2rem;
+    font-size: 0.65rem;
+    color: var(--tb-muted);
+  }
 }
 
-.credit {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.85);
+// On small screens the photo shrinks so the header still fits
+@media (max-width: 45rem) {
+  .photo img {
+    width: 7rem;
+    height: 5rem;
+  }
 }
 
 .flag {
