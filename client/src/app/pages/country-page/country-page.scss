@@ -1,3 +1,9 @@
+// The map sits between the header and the widgets
+.map-row {
+  display: block;
+  margin-bottom: 1rem;
+}
+
 .widgets {
   display: grid;
   grid-template-columns: 1fr;

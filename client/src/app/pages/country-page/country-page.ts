@@ -6,6 +6,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
 import { Country } from '../../models/country';
+import type { Place } from '../../models/place';
 import { CountriesService } from '../../services/countries-service';
 import { AuthService } from '../../services/auth-service';
 import { CompareService } from '../../services/compare-service';
@@ -14,6 +15,7 @@ import { ImagesService } from '../../services/images-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
 import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
+import { MapWidget } from '../../components/map-widget/map-widget';
 
 @Component({
   selector: 'app-country-page',
@@ -25,6 +27,7 @@ import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget
     WeatherWidget,
     FactsWidget,
     HolidaysWidget,
+    MapWidget,
   ],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
@@ -42,6 +45,9 @@ export class CountryPage {
   protected readonly country = signal<Country | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+
+  // The city picked in the weather widget. The map follows it.
+  protected readonly selectedPlace = signal<Place | null>(null);
 
   // A photo of the capital for the header. null = no photo (yet), the header has none.
   protected readonly photoUrl = signal<string | null>(null);
@@ -64,6 +70,12 @@ export class CountryPage {
   }
 
   constructor() {
+    // A new country starts without a picked city
+    effect(() => {
+      this.country();
+      this.selectedPlace.set(null);
+    });
+
     // Fetch the photo whenever a new country has loaded
     effect((onCleanup) => {
       const country = this.country();
