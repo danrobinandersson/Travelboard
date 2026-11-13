@@ -1,0 +1,9 @@
+<mat-card class="widget">
+  <mat-card-content>
+    @if (hasTarget()) {
+      <div #map class="map"></div>
+    } @else {
+      <p>Map isn't available for this country.</p>
+    }
+  </mat-card-content>
+</mat-card>
