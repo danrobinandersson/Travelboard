@@ -10,7 +10,12 @@ import { placesRouter } from "./routes/places.js";
 import { imagesRouter } from "./routes/images.js";
 
 const app = express();
-app.use(cors());
+// Only our own website (and the local dev server) may call the API from a browser
+const allowedOrigins = [
+  "https://travelboard-nu.vercel.app",
+  "http://localhost:4200",
+];
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.use("/api/rates", ratesRouter);
