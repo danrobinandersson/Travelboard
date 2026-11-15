@@ -1,0 +1,11 @@
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.base-select {
+  width: 7rem;
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 8px;
+}

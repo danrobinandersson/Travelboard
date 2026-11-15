@@ -1,7 +1,7 @@
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
 import { RatesResponse } from '../../models/rates';
 import { RatesService } from '../../services/rates-service';
 import { CHART_COLORS } from '../../utils/chart-colors';
@@ -14,6 +14,10 @@ import { GridComponent, TooltipComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsOption } from 'echarts';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { BASE_CURRENCIES } from '../../utils/currencies';
 
 echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
@@ -28,6 +32,10 @@ echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
     AgGridAngular,
     NgxEchartsDirective,
     MatSlideToggle,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
   ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './exchange-rate-widget.html',
@@ -36,13 +44,24 @@ echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 export class ExchangeRateWidget {
   private readonly ratesService = inject(RatesService);
 
+  // The base currency to start with. The user can change it with the dropdown.
   readonly base = input('SEK');
   // The currency to show. null means the country has none that we can look up.
   readonly target = input<string | null>('EUR');
 
+  protected readonly currencies = BASE_CURRENCIES;
+
+  // The base currency chosen in the dropdown. It starts as the base input.
+  protected readonly selectedBase = linkedSignal(() => this.base());
+
   protected readonly data = signal<RatesResponse | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+
+  // A currency cannot be compared with itself, e.g. SEK for a Swedish visitor looking at Sweden
+  protected readonly sameCurrency = computed(
+    () => this.target() !== null && this.selectedBase() === this.target(),
+  );
 
   // The last 7 days, newest first
   protected readonly recent = computed(() => this.data()?.history.slice(-7).reverse() ?? []);
@@ -75,12 +94,16 @@ export class ExchangeRateWidget {
     };
   });
 
+  protected onBaseChange(event: MatSelectChange): void {
+    this.selectedBase.set(event.value as string);
+  }
+
   constructor() {
     effect((onCleanup) => {
-      const base = this.base();
+      const base = this.selectedBase();
       const target = this.target();
 
-      if (target === null) {
+      if (target === null || base === target) {
         this.data.set(null);
         this.error.set(null);
         this.loading.set(false);
