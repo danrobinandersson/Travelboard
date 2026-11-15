@@ -1,0 +1,21 @@
+.photo {
+  margin: 0 0 1rem;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 30rem;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  figcaption {
+    margin-top: 0.2rem;
+    font-size: 0.65rem;
+    color: var(--tb-muted);
+  }
+}
+
+app-about-widget {
+  display: block;
+}

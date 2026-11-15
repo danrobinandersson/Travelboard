@@ -1,19 +1,8 @@
 <mat-card class="widget">
   <mat-card-header>
-    <mat-card-title>{{ showAbout() ? 'About' : 'Facts about' }} {{ country().name }}</mat-card-title>
-    <mat-slide-toggle
-      labelPosition="before"
-      [checked]="showAbout()"
-      (change)="showAbout.set($event.checked)"
-    >
-      Wikipedia
-    </mat-slide-toggle>
+    <mat-card-title>Overview</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-
-  @if (showAbout()) {
-    <app-about-widget [countryName]="country().name" />
-  } @else {
     @if (country().description; as text) {
       <p class="description">{{ text }}</p>
     }
@@ -76,6 +65,5 @@
         <span class="label">Measurements:</span> {{ country().measurementSystem ?? 'Unknown' }}
       </li>
     </ul>
-  }
-</mat-card-content>
+  </mat-card-content>
 </mat-card>

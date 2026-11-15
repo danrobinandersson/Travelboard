@@ -4,12 +4,6 @@
   <p class="error">{{ error() }}</p>
 } @else if (country(); as c) {
   <header class="country-header">
-    @if (photoUrl(); as photo) {
-      <figure class="photo">
-        <img [src]="photo" alt="" />
-        <figcaption>Photo from Wikipedia</figcaption>
-      </figure>
-    }
     <img class="flag" [src]="c.flag" alt="" />
     <div class="title">
       <h2>{{ c.name }}</h2>
@@ -46,15 +40,12 @@
   <app-map-widget class="map-row" [country]="c" [place]="selectedPlace()" />
 
   <div class="widgets">
-    <app-facts-widget class="w-5" [country]="c" />
+    <app-facts-widget class="w-6" [country]="c" />
+    <app-weather-widget class="w-6" [country]="c" (placeChange)="selectedPlace.set($event)" />
+    <app-wikipedia-widget class="w-6 tall" [country]="c" />
 
-    <app-weather-widget class="w-7" [country]="c" (placeChange)="selectedPlace.set($event)" />
+    <app-exchange-rate-widget class="w-6" [target]="currency()" />
 
-    @if (currency(); as target) {
-      <app-exchange-rate-widget class="w-5" [target]="target" />
-    } @else {
-      <p class="w-5">Exchange rates aren't available for this country.</p>
-    }
-    <app-holidays-widget class="w-7" [countryCode]="c.code" />
+    <app-holidays-widget class="w-6" [countryCode]="c.code" />
   </div>
 }

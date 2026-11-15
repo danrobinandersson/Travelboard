@@ -1,0 +1,14 @@
+<mat-card class="widget">
+  <mat-card-header>
+    <mat-card-title>About {{ country().name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (photoUrl(); as photo) {
+      <figure class="photo">
+        <img [src]="photo" [alt]="'Photo of ' + country().capital" />
+        <figcaption>{{ country().capital }}. Photo from Wikipedia</figcaption>
+      </figure>
+    }
+    <app-about-widget [countryName]="country().name" />
+  </mat-card-content>
+</mat-card>
