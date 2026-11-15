@@ -4,6 +4,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { RatesResponse } from '../../models/rates';
 import { RatesService } from '../../services/rates-service';
+import { CHART_COLORS } from '../../utils/chart-colors';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
@@ -14,12 +15,20 @@ import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsOption } from 'echarts';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
-
 echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
 @Component({
   selector: 'app-exchange-rate-widget',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, DecimalPipe, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    DecimalPipe,
+    AgGridAngular,
+    NgxEchartsDirective,
+    MatSlideToggle,
+  ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './exchange-rate-widget.html',
   styleUrl: './exchange-rate-widget.scss',
@@ -28,7 +37,8 @@ export class ExchangeRateWidget {
   private readonly ratesService = inject(RatesService);
 
   readonly base = input('SEK');
-  readonly target = input('EUR');
+  // The currency to show. null means the country has none that we can look up.
+  readonly target = input<string | null>('EUR');
 
   protected readonly data = signal<RatesResponse | null>(null);
   protected readonly loading = signal(true);
@@ -37,36 +47,45 @@ export class ExchangeRateWidget {
   // The last 7 days, newest first
   protected readonly recent = computed(() => this.data()?.history.slice(-7).reverse() ?? []);
 
-    protected readonly columnDefs: ColDef[] = [
+  protected readonly columnDefs: ColDef[] = [
     { field: 'date', headerName: 'Date', sortable: true, filter: true },
     { field: 'rate', headerName: 'Rate', sortable: true, filter: 'agNumberColumnFilter' },
   ];
 
-protected readonly showTable = signal(false);
+  protected readonly showTable = signal(false);
 
   protected readonly chartOptions = computed<EChartsOption>(() => {
-  const history = this.data()?.history ?? [];
-  return {
-    tooltip: { trigger: 'axis' },
-    grid: { left: 50, right: 20, top: 20, bottom: 30 },
-    xAxis: { type: 'category', data: history.map((p) => p.date) },
-    yAxis: { type: 'value', scale: true },
-    series: [
-      {
-        type: 'line',
-        data: history.map((p) => p.rate),
-        smooth: true,
-        showSymbol: false,
-      },
-    ],
-  };
-});
-
+    const history = this.data()?.history ?? [];
+    return {
+      tooltip: { trigger: 'axis' },
+      grid: { left: 50, right: 20, top: 20, bottom: 30 },
+      xAxis: { type: 'category', data: history.map((p) => p.date) },
+      yAxis: { type: 'value', scale: true },
+      series: [
+        {
+          type: 'line',
+          data: history.map((p) => p.rate),
+          smooth: true,
+          showSymbol: false,
+          // lineStyle is the line itself, itemStyle also colours the dot in the tooltip
+          lineStyle: { color: CHART_COLORS.accentYellow },
+          itemStyle: { color: CHART_COLORS.accentYellow },
+        },
+      ],
+    };
+  });
 
   constructor() {
     effect((onCleanup) => {
       const base = this.base();
       const target = this.target();
+
+      if (target === null) {
+        this.data.set(null);
+        this.error.set(null);
+        this.loading.set(false);
+        return;
+      }
 
       this.loading.set(true);
       this.error.set(null);

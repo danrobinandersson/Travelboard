@@ -8,10 +8,11 @@ import {
   input,
   viewChild,
 } from '@angular/core';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import * as L from 'leaflet';
 import type { Country } from '../../models/country';
 import type { Place } from '../../models/place';
+import { CHART_COLORS } from '../../utils/chart-colors';
 
 // Map tiles from OpenStreetMap. Free to use for light traffic, and the credit below is required.
 const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -42,7 +43,7 @@ interface MapTarget {
 
 @Component({
   selector: 'app-map-widget',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle],
+  imports: [MatCard, MatCardContent],
   templateUrl: './map-widget.html',
   styleUrl: './map-widget.scss',
 })
@@ -120,7 +121,7 @@ export class MapWidget {
         radius: 9,
         color: '#ffffff',
         weight: 3,
-        fillColor: '#0f766e',
+        fillColor: CHART_COLORS.primaryGreen,
         fillOpacity: 1,
       })
         .addTo(this.map)
