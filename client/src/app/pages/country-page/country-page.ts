@@ -6,14 +6,16 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 import { ExchangeRateWidget } from '../../components/exchange-rate-widget/exchange-rate-widget';
 import { Country } from '../../models/country';
+import type { Place } from '../../models/place';
 import { CountriesService } from '../../services/countries-service';
 import { AuthService } from '../../services/auth-service';
 import { CompareService } from '../../services/compare-service';
 import { FavouritesService } from '../../services/favourites-service';
-import { ImagesService } from '../../services/images-service';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { FactsWidget } from '../../components/facts-widget/facts-widget';
 import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget';
+import { MapWidget } from '../../components/map-widget/map-widget';
+import { WikipediaWidget } from '../../components/wikipedia-widget/wikipedia-widget';
 
 @Component({
   selector: 'app-country-page',
@@ -25,6 +27,8 @@ import { HolidaysWidget } from '../../components/holidays-widget/holidays-widget
     WeatherWidget,
     FactsWidget,
     HolidaysWidget,
+    MapWidget,
+    WikipediaWidget,
   ],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
@@ -34,7 +38,6 @@ export class CountryPage {
   protected readonly auth = inject(AuthService);
   protected readonly favourites = inject(FavouritesService);
   protected readonly compare = inject(CompareService);
-  private readonly imagesService = inject(ImagesService);
 
   // Filled in by the router from the ":code" part of /country/:code
   readonly code = input.required<string>();
@@ -43,8 +46,8 @@ export class CountryPage {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
 
-  // A photo of the capital for the header. null = no photo (yet), the header has none.
-  protected readonly photoUrl = signal<string | null>(null);
+  // The city picked in the weather widget. The map follows it.
+  protected readonly selectedPlace = signal<Place | null>(null);
 
   // Only the first currency is used for now
   protected readonly currency = computed(() => this.country()?.currencies[0]?.code ?? null);
@@ -64,21 +67,10 @@ export class CountryPage {
   }
 
   constructor() {
-    // Fetch the photo whenever a new country has loaded
-    effect((onCleanup) => {
-      const country = this.country();
-      this.photoUrl.set(null);
-      if (!country?.capital) return;
-
-      const subscription = this.imagesService
-        .getCountryImage(country.capital, country.name)
-        .subscribe({
-          next: ({ imageUrl }) => this.photoUrl.set(imageUrl),
-          // No photo is not a problem: the header just has none
-          error: () => undefined,
-        });
-
-      onCleanup(() => subscription.unsubscribe());
+    // A new country starts without a picked city
+    effect(() => {
+      this.country();
+      this.selectedPlace.set(null);
     });
 
     // Runs again when the code changes, e.g. /country/SE -> /country/NO

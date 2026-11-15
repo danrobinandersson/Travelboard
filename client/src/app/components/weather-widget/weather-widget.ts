@@ -1,7 +1,16 @@
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  signal,
+} from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import type { Country } from '../../models/country';
@@ -33,6 +42,9 @@ export class WeatherWidget {
   readonly country = input.required<Country>();
 
   // A city picked by the user. It goes back to null by itself whenever the country changes
+  // Tells the page which city is picked (null = none), so the map can follow
+  readonly placeChange = output<Place | null>();
+
   protected readonly selectedPlace = linkedSignal<Country, Place | null>({
     source: this.country,
     computation: () => null,
@@ -73,6 +85,8 @@ export class WeatherWidget {
   );
 
   constructor() {
+    effect(() => this.placeChange.emit(this.selectedPlace()));
+
     effect((onCleanup) => {
       const point = this.point();
 

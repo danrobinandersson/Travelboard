@@ -1,0 +1,8 @@
+.map {
+  width: 100%;
+  height: 18rem;
+  border-radius: 8px;
+  // Leaflet uses high z-index values. This keeps them inside the map, so the map cannot
+  // cover things like the compare popover.
+  isolation: isolate;
+}
