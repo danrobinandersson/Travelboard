@@ -1,8 +1,9 @@
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { RatesResponse } from '../../models/rates';
+import { BaseCurrencyService } from '../../services/base-currency-service';
 import { RatesService } from '../../services/rates-service';
 import { CHART_COLORS } from '../../utils/chart-colors';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -43,16 +44,15 @@ echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 })
 export class ExchangeRateWidget {
   private readonly ratesService = inject(RatesService);
+  private readonly baseCurrency = inject(BaseCurrencyService);
 
-  // The base currency to start with. The user can change it with the dropdown.
-  readonly base = input('SEK');
   // The currency to show. null means the country has none that we can look up.
   readonly target = input<string | null>('EUR');
 
   protected readonly currencies = BASE_CURRENCIES;
 
-  // The base currency chosen in the dropdown. It starts as the base input.
-  protected readonly selectedBase = linkedSignal(() => this.base());
+  // The base currency chosen in the dropdown. It is shared with the compare view.
+  protected readonly selectedBase = this.baseCurrency.base;
 
   protected readonly data = signal<RatesResponse | null>(null);
   protected readonly loading = signal(true);

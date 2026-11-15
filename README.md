@@ -20,7 +20,7 @@ Built as a degree project (examensarbete) in 2026.
   - Exchange rates: a chart or table of the last 30 days, with a choice of base currency
   - Public holidays: a chart (per month) or a sortable, filterable table
   - A map that follows the city you pick
-- **Compare 2-3 countries** (no login needed): facts, weather and the exchange rate against SEK, with a star on the best value in each row
+- **Compare 2-3 countries** (no login needed): facts, weather and the exchange rate against your chosen base currency (SEK by default), with a star on the best value in each row
 - **Login, register, log out** with Supabase
 - **Favourites** (login required): saved per user and protected by Row Level Security
 - Every widget has loading and error states, so the app keeps working if an external API is down

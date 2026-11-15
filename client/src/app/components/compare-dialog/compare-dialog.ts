@@ -6,6 +6,7 @@ import { catchError, forkJoin, of } from 'rxjs';
 import { Country } from '../../models/country';
 import { RatesResponse } from '../../models/rates';
 import { WeatherResponse } from '../../models/weather';
+import { BaseCurrencyService } from '../../services/base-currency-service';
 import { CompareService } from '../../services/compare-service';
 import { CountriesService } from '../../services/countries-service';
 import { RatesService } from '../../services/rates-service';
@@ -22,11 +23,9 @@ interface WeatherStats {
   rain: number; // total precipitation, mm
 }
 
-const HOME_CURRENCY = 'SEK';
-
 // What one cell of the exchange rate row shows
 type RateCell =
-  | { kind: 'home' } // the country uses SEK, so there is nothing to convert
+  | { kind: 'same' } // the country uses the base currency, so there is nothing to convert
   | { kind: 'rate'; code: string; rate: number; change: number }; // change = % over the period
 
 const round1 = (value: number): number => Math.round(value * 10) / 10;
@@ -67,6 +66,10 @@ export class CompareDialog {
   private readonly weatherService = inject(WeatherService);
   private readonly ratesService = inject(RatesService);
 
+  // The base currency chosen in the exchange rate widget (SEK until the user changes it).
+  // Read once, so the labels always match the rates that are loaded.
+  protected readonly base = inject(BaseCurrencyService).base();
+
   private readonly allCountries = signal<Country[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
@@ -93,15 +96,16 @@ export class CompareDialog {
   );
 
   // null means no rate is available
-  private readonly rates = signal<Record<string, RatesResponse | 'home' | null>>({});
+  private readonly rates = signal<Record<string, RatesResponse | 'same' | null>>({});
   protected readonly ratesLoading = signal(true);
 
   protected readonly rateCells = computed<(RateCell | null)[]>(() =>
     this.countries().map((country) => {
       const r = this.rates()[country.code];
-      if (r === 'home') return { kind: 'home' };
+      if (r === 'same') return { kind: 'same' };
       if (!r || r.history.length === 0) return null;
-      // Positive: 1 SEK buys more than it did at the start of the period, so SEK got stronger
+      // Positive: 1 unit of the base currency buys more than it did at the start of the period,
+      // so the base currency got stronger
       const first = r.history[0]?.rate ?? r.latest.rate;
       return {
         kind: 'rate',
@@ -128,7 +132,7 @@ export class CompareDialog {
         stats.map((s) => s?.rain ?? null),
         'low',
       ),
-      // The best rate is the one where SEK gained the most
+      // The best rate is the one where the base currency gained the most
       rate: bestPositions(
         this.rateCells().map((cell) => (cell?.kind === 'rate' ? cell.change : null)),
         'high',
@@ -177,7 +181,7 @@ export class CompareDialog {
     });
   }
 
-  // The rate of the country's first currency against SEK, like the exchange rate widget
+  // The rate of the country's first currency against the base currency, like the widget
   private loadRates(): void {
     const countries = this.countries();
     if (countries.length === 0) {
@@ -187,8 +191,8 @@ export class CompareDialog {
     const requests = countries.map((country) => {
       const code = country.currencies[0]?.code;
       if (!code) return of(null);
-      if (code === HOME_CURRENCY) return of('home' as const);
-      return this.ratesService.getRates(HOME_CURRENCY, code).pipe(catchError(() => of(null)));
+      if (code === this.base) return of('same' as const);
+      return this.ratesService.getRates(this.base, code).pipe(catchError(() => of(null)));
     });
 
     forkJoin(requests).subscribe((results) => {
