@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import type { Holiday } from '../../models/holiday';
 import { HolidaysService } from '../../services/holidays-service';
+import { CHART_COLORS } from '../../utils/chart-colors';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
@@ -20,7 +21,16 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 @Component({
   selector: 'app-holidays-widget',
-  imports: [DatePipe, MatCard, MatCardContent, MatCardHeader, MatCardTitle, AgGridAngular, NgxEchartsDirective, MatSlideToggle],
+  imports: [
+    DatePipe,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    AgGridAngular,
+    NgxEchartsDirective,
+    MatSlideToggle,
+  ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './holidays-widget.html',
   styleUrl: './holidays-widget.scss',
@@ -69,7 +79,9 @@ export class HolidaysWidget {
     grid: { left: 40, right: 20, top: 20, bottom: 30 },
     xAxis: { type: 'category', data: MONTHS },
     yAxis: { type: 'value', minInterval: 1 },
-    series: [{ type: 'bar', data: this.monthCounts() }],
+    series: [
+      { type: 'bar', data: this.monthCounts(), itemStyle: { color: CHART_COLORS.primaryGreen } },
+    ],
   }));
 
   constructor() {

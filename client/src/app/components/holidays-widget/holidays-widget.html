@@ -12,30 +12,29 @@
     }
   </mat-card-header>
   <mat-card-content>
-
-  @if (loading()) {
-    <p>Loading...</p>
-  } @else if (error()) {
-    <p class="error">{{ error() }}</p>
-  } @else if (holidays().length === 0) {
-    <p>No holiday data for this country.</p>
-  } @else {
-    <p class="key">{{ summary().count }} public holidays</p>
-    <p class="sub">
-      @if (summary().next; as next) {
-        Next: {{ next.name }}, {{ next.date | date: 'd MMM' }}
-      } @else {
-        No more holidays this year
-      }
-    </p>
-
-    @if (showTable()) {
-      <div class="visual">
-        <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
-      </div>
+    @if (loading()) {
+      <p>Loading...</p>
+    } @else if (error()) {
+      <p class="error">{{ error() }}</p>
+    } @else if (holidays().length === 0) {
+      <p>No holiday data for this country.</p>
     } @else {
-      <div echarts [options]="chartOptions()" class="visual"></div>
+      <p class="key">{{ summary().count }} public holidays</p>
+      <p class="sub">
+        @if (summary().next; as next) {
+          Next: {{ next.name }}, {{ next.date | date: 'd MMM' }}
+        } @else {
+          No more holidays this year
+        }
+      </p>
+
+      @if (showTable()) {
+        <div class="visual">
+          <ag-grid-angular class="grid" [rowData]="holidays()" [columnDefs]="columnDefs" />
+        </div>
+      } @else {
+        <div echarts [options]="chartOptions()" class="visual"></div>
+      }
     }
-  }
-</mat-card-content>
+  </mat-card-content>
 </mat-card>

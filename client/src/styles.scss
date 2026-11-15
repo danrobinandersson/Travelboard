@@ -36,7 +36,7 @@ body {
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
 html,
 body {
   height: 100%;
@@ -71,7 +71,6 @@ body:has(app-home-page) app-footer {
   height: 100%;
 }
 
-// Our own design tokens. Change a colour here and the whole app follows.
 :root {
   --tb-primary: #0f766e;
   --tb-primary-dark: #0b5650;
