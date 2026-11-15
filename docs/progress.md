@@ -28,12 +28,15 @@ Left: deploy check, small hardening, error-handling and responsive check, README
 - Holidays: Nager.Date service (24 h cache), `GET /api/holidays`, widget with a chart (holidays per month) and an AG Grid table with sorting and filtering
 - Supabase login: auth service, `/login` page (log in and register), header shows email and log out, `authGuard` ready to use. Email confirmation is off
 - Favourites: `favourites` table with RLS, save button on the country page, `/favourites` page (login required), link in the header
-- About text from Wikipedia (`GET /api/about`), shown in the facts widget via a toggle
+- Wikipedia widget with the capital's photo and the About text (`GET /api/about`), separate from the facts widget
 - Weather for cities: place search (`GET /api/places`, Open-Meteo geocoding, 24 h cache), pick a city and the weather widget follows, reset goes back to the capital
 - Styling: design tokens in `styles.scss`, Material cards and buttons, header with logo, account menu and search icon, home page hero
 - Compare view: Compare button, popover (bottom right) and a modal with facts, weather, exchange rate against SEK and a star on the best value in each row. Max 3 countries, the selection is saved in `localStorage`
 - Photos on the favourite cards: `GET /api/images` (photo of the capital from Wikipedia, 24 h cache)
 - Countries without an ISO code (e.g. Abkhazia) are filtered out of the country list
+- Map widget (Leaflet, OpenStreetMap) on the country page, it follows the city picked in the weather widget
+- Country page layout: all widgets half width, the Wikipedia widget twice as tall. Chart colours are set in `utils/chart-colors.ts`
+- Exchange widget: choose the base currency with a dropdown, and a message when a country has no currency
 - Git: feature branches merged into `develop` and `main`. Work on `develop`, merge into `main` only to deploy
 
 ## In progress
@@ -54,9 +57,9 @@ Left: deploy check, small hardening, error-handling and responsive check, README
 ## Future work (not done, mention in the result section)
 
 - AI chat (Claude API, SSE, tool use)
-- Map (Leaflet) and things to do (Wikipedia geosearch)
+- Things to do list (Wikipedia geosearch)
 - Show/hide and reorder widgets
-- Exchange widget gaps: use the first currency Frankfurter supports, handle base equals target, server cache
+- Exchange widget gaps: use the first currency Frankfurter supports, server cache
 - Compare: charts, more rows (e.g. holidays), World Bank indicators
 - Unit tests
 - Edge cases for capital/coordinates/population (AQ, BO, ZA, PA)
