@@ -1,19 +1,36 @@
 <mat-card class="widget">
   <mat-card-header>
     <mat-card-title>Exchange rate</mat-card-title>
-    @if (data()) {
-      <mat-slide-toggle
-        labelPosition="before"
-        [checked]="showTable()"
-        (change)="showTable.set($event.checked)"
-      >
-        Table
-      </mat-slide-toggle>
-    }
+    <div class="controls">
+      @if (target() !== null) {
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="base-select">
+          <mat-label>Base</mat-label>
+          <mat-select [value]="selectedBase()" (selectionChange)="onBaseChange($event)">
+            @for (code of currencies; track code) {
+              <mat-option [value]="code">{{ code }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+      @if (data()) {
+        <mat-slide-toggle
+          labelPosition="before"
+          [checked]="showTable()"
+          (change)="showTable.set($event.checked)"
+        >
+          Table
+        </mat-slide-toggle>
+      }
+    </div>
   </mat-card-header>
   <mat-card-content>
     @if (target() === null) {
       <p>Exchange rates aren't available for this country.</p>
+    } @else if (sameCurrency()) {
+      <p>
+        {{ selectedBase() }} is also this country's currency. Choose another base currency to see a
+        rate.
+      </p>
     } @else if (loading()) {
       <p>Loading...</p>
     } @else if (error()) {
