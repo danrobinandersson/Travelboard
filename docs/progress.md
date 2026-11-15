@@ -31,7 +31,7 @@ Left: deploy check, small hardening, error-handling and responsive check, README
 - Wikipedia widget with the capital's photo and the About text (`GET /api/about`), separate from the facts widget
 - Weather for cities: place search (`GET /api/places`, Open-Meteo geocoding, 24 h cache), pick a city and the weather widget follows, reset goes back to the capital
 - Styling: design tokens in `styles.scss`, Material cards and buttons, header with logo, account menu and search icon, home page hero
-- Compare view: Compare button, popover (bottom right) and a modal with facts, weather, exchange rate against SEK and a star on the best value in each row. Max 3 countries, the selection is saved in `localStorage`
+- Compare view: Compare button, popover (bottom right) and a modal with facts, weather, exchange rate against the chosen base currency and a star on the best value in each row. Max 3 countries, the selection is saved in `localStorage`
 - Photos on the favourite cards: `GET /api/images` (photo of the capital from Wikipedia, 24 h cache)
 - Countries without an ISO code (e.g. Abkhazia) are filtered out of the country list
 - Map widget (Leaflet, OpenStreetMap) on the country page, it follows the city picked in the weather widget
@@ -83,6 +83,7 @@ Left: deploy check, small hardening, error-handling and responsive check, README
 
 - 2026-11-07: After feedback, priority is styling, compare view, map and things to do. AI chat is dropped for now
 - 2026-11-07: City search uses Open-Meteo geocoding only. The weather itself still comes from MET Norway
+- 2026-11-15: The compare view uses the base currency chosen in the exchange widget (shared through `BaseCurrencyService`, SEK by default), so the two always agree
 - 2026-11-11: In the compare view "best exchange rate" means SEK gained the most over the last 30 days. The raw rate is misleading (JPY would always win)
 - 2026-11-11: Photos come from the capital's Wikipedia page, because a country page's main image is its flag
 - 2026-10-26: The country page loads its data from the URL, so refresh and shared links work

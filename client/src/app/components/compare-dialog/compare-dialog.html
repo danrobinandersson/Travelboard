@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Countries Comparison</h2>
 <p class="note">
   ★ marks the best value in a row. Weather: the warmest, the most sunny days and the least rain over
-  the next 7 days in the capital. Exchange rate: the country where the Swedish krona has gained the
-  most against its currency in the last 30 days.
+  the next 7 days in the capital. Exchange rate: the country where {{ base }} has gained the most
+  against its currency in the last 30 days.
 </p>
 <mat-dialog-content>
   @if (loading()) {
@@ -90,14 +90,14 @@
           }
         </tr>
         <tr>
-          <th scope="row">Exchange rate (1 SEK)</th>
+          <th scope="row">Exchange rate (1 {{ base }})</th>
           @for (c of countries(); track c.code; let i = $index) {
             <td [class.best]="best().rate.includes(i)">
               @if (ratesLoading()) {
                 …
               } @else if (rateCells()[i]; as r) {
-                @if (r.kind === 'home') {
-                  Home currency
+                @if (r.kind === 'same') {
+                  Same as base currency
                 } @else {
                   {{ r.rate | number: '1.2-4' }} {{ r.code }}
                   @if (best().rate.includes(i)) {
